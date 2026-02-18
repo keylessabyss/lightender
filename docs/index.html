@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+
+<!--
+     HTML code used with Epic Games HTML5 projects
+
+     much of this is for UE4 development purposes.
+
+     to create a custom HTML file for your project:
+     - make a copy of this file - or make one from scratch
+     - and put it in: "your project folder"/Build/HTML/GameX.html.template
+-->
+
+<html lang="en">
+<head>
+	<title>Megatroid</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script> -->
+	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
+	<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet"> -->
+
+	<script src="jquery-2.1.3.min.js"></script>
+	<script src="bootstrap.min.js"></script>
+	<link href="bootstrap.min.css" rel="stylesheet">
+
+	<!-- https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/fonts/glyphicons-halflings-regular.woff2 -->
+	<!-- https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/fonts/glyphicons-halflings-regular.woff -->
+	<!-- https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/fonts/glyphicons-halflings-regular.ttf -->
+
+	<link href="Megatroid-HTML5-Shipping.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="wrapper" id="mainarea">
+	<div class="alert alert-warning centered-axis-xy" style="min-height: 20px; display:none;" role="alert" id="compilingmessage">
+		<div id='loadTasks'> </div>
+	</div>
+	<!-- The "tabindex=0" specifier on the canvas is important to allow it to capture keyboard focus when clicking on it with a mouse -->
+	<canvas tabindex=0 id="canvas" class="emscripten" oncontextmenu="event.preventDefault()" style="display:none;">
+</div>
+<div class="buttonarea text-center" id="buttonarea">
+	<!--
+	<button type="button" class="btn btn-primary" id="exit_pointerlock" title="Exit Pointerlock" style="display:none">
+		<span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
+		<span class="buttontext">&nbsp;Exit Pointerlock</span>
+	</button>
+	-->
+	
+	<button type="button" class="btn btn-primary" id="about" data-toggle="modal" data-target="#aboutModal" title="$Abielon">
+		<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+		<span class="buttontext">&nbsp;$Abielon</span>
+	</button>
+	
+	
+	<button type="button" id="pause" class="btn btn-primary" onclick="try { Module['pauseMainLoop'](); $('#resume').show().focus(); $('#pause').hide(); } catch(e) {console.error(e);}" title="Pause" style="display:none">
+		<span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+		<span class="buttontext">&nbsp;Pause</span> 
+	</button>
+	<button type="button" id="resume" class="btn btn-primary" onclick="try { Module['resumeMainLoop'](); $('#pause').show().focus(); $('#resume').hide(); } catch(e) {console.error(e);}" title="Resume" style="display:none">
+		<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+		<span class="buttontext">&nbsp;Resume</span>
+	</button>
+	
+	<!--<button type="button" class="btn btn-primary" onclick="var w = document.getElementById('logwindow'); w.style.display = w.style.display ? '' : 'none';">Toggle Log</button></div>-->
+	
+	<button type="button" class="btn btn-primary" id="clear_indexeddb" onclick="try { deleteIndexedDBStorage(); } catch(e) {console.error(e);}" title="Clear IndexedDB" style="display:none">
+		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+		<span class="buttontext">&nbsp;Clear IndexedDB</span>
+	</button>
+	
+	
+	<button type="button" class="btn btn-primary" id="fullscreen_request" title="Fullscreen" style="display:none">
+		<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+		<span class="buttontext">&nbsp;Fullscreen</span>
+	</button>
+	
+</div>
+
+
+<div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div>Cash app as gift please, anything helps. -Your noble paladin Abielon @Keyless Abyss</div>
+				<div class="text-center">
+					<button type="button" class="btn btn-default" data-dismiss="modal" style="margin-bottom:0">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+						<span class="buttontext">&nbsp;Close</span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="texthalf text-normal jumbotron " id="logwindow" style='display:none'></div>
+
+<script src="Megatroid-HTML5-Shipping.UE4.js"></script>
+</body>
+</html>
