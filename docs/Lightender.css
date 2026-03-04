@@ -10,7 +10,7 @@
 html, body, .container {
 	height: 100%;
 	font-family: "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
-	background: rgb(50, 50, 50);
+	background: linear-gradient(to top left, black, #1e1a78);
 }
 
 .h4, h4 {
@@ -103,10 +103,10 @@ html, body, .container {
 }
 
 .buttonarea {
-	/*
+	
 	position: relative;
 	top: -50px;
-	*/
+	
 	border-top: 0px;
 	border-bottom: 0px;
 	padding: 0px;

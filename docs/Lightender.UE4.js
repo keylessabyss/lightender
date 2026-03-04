@@ -36,7 +36,7 @@ if ( AudioContext ) {
 // low enough that they do not strictly require WebGL 2.
 const requiredWebGLVersion = 1;
 
-const targetOffscreenCanvas = true;
+const targetOffscreenCanvas = false;
 
 // Add ?webgl1 GET param to explicitly test the WebGL 1 fallback version even if browser does support WebGL 2.
 const explicitlyUseWebGL1 = (location.search.indexOf('webgl1') != -1);
@@ -75,7 +75,7 @@ var Module = {
 	assetDownloadProgress: {}, // Track how many bytes of each needed asset has been downloaded so far.
 
 	UE4_indexedDBName: 'UE4_assetDatabase_Lightender', // this should be an ascii ID string without special characters that is unique to the project that is being packaged
-	UE4_indexedDBVersion: 202603041755, // Bump this number to invalidate existing IDB storages in browsers.
+	UE4_indexedDBVersion: 202603041839, // Bump this number to invalidate existing IDB storages in browsers.
 };
 
 
@@ -93,7 +93,7 @@ if ('') {
 	//}
 }
 
-Module.arguments = sessionStorageCommandLine != null ? [sessionStorageCommandLine] : ['../../../Lightender/Lightender.uproject','-stdout','-UseFixedTimeStep',];
+Module.arguments = sessionStorageCommandLine != null ? [sessionStorageCommandLine] : ['../../../Lightender/Lightender.uproject','-stdout',];
 
 // UE4 Editor or UE4 Frontend with assets "cook on the fly"?
 if (location.host != "" && (location.search.indexOf('cookonthefly') != -1)) {
@@ -127,7 +127,7 @@ console.log("mobile: " + mobile);
 
 var dataVariant = '';
 
-if (true) {
+if (false) {
 	if (mobile) {
 		dataVariant = '.astc';
 	}
@@ -181,7 +181,7 @@ window.onerror = function(e) {
 	]));
 }
 
-Module['UE4_MultiThreaded'] = true && detectWasmThreads();
+Module['UE4_MultiThreaded'] = false && detectWasmThreads();
 
 
 // ================================================================================
@@ -357,7 +357,7 @@ function resizeCanvas(aboutToEnterFullscreen) {
 	
 	// Compute the unconstrained size for the div that encloses the canvas, in CSS pixel units.
 	var cssWidth = mainAreaRect.right - mainAreaRect.left;
-	var cssHeight = Math.max(minimumCanvasHeightCssPixels, mainAreaRect.bottom - mainAreaRect.top, window.innerHeight * minimumCanvasHeightFractionOfBrowserWindowHeight - (false ? 0 : buttonAreaRect.height));
+	var cssHeight = Math.max(minimumCanvasHeightCssPixels, mainAreaRect.bottom - mainAreaRect.top, window.innerHeight * minimumCanvasHeightFractionOfBrowserWindowHeight - (true ? 0 : buttonAreaRect.height));
 
 	if (canvasWindowedScaleMode == 3/*NONE*/) {
 		// In fixed display mode, render to a statically determined WebGL render target size.
