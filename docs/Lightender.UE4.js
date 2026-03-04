@@ -36,7 +36,7 @@ if ( AudioContext ) {
 // low enough that they do not strictly require WebGL 2.
 const requiredWebGLVersion = 1;
 
-const targetOffscreenCanvas = false;
+const targetOffscreenCanvas = true;
 
 // Add ?webgl1 GET param to explicitly test the WebGL 1 fallback version even if browser does support WebGL 2.
 const explicitlyUseWebGL1 = (location.search.indexOf('webgl1') != -1);
@@ -75,7 +75,7 @@ var Module = {
 	assetDownloadProgress: {}, // Track how many bytes of each needed asset has been downloaded so far.
 
 	UE4_indexedDBName: 'UE4_assetDatabase_Lightender', // this should be an ascii ID string without special characters that is unique to the project that is being packaged
-	UE4_indexedDBVersion: 202603041519, // Bump this number to invalidate existing IDB storages in browsers.
+	UE4_indexedDBVersion: 202603041755, // Bump this number to invalidate existing IDB storages in browsers.
 };
 
 
@@ -93,7 +93,7 @@ if ('') {
 	//}
 }
 
-Module.arguments = sessionStorageCommandLine != null ? [sessionStorageCommandLine] : ['../../../Lightender/Lightender.uproject','-stdout',];
+Module.arguments = sessionStorageCommandLine != null ? [sessionStorageCommandLine] : ['../../../Lightender/Lightender.uproject','-stdout','-UseFixedTimeStep',];
 
 // UE4 Editor or UE4 Frontend with assets "cook on the fly"?
 if (location.host != "" && (location.search.indexOf('cookonthefly') != -1)) {
@@ -127,7 +127,7 @@ console.log("mobile: " + mobile);
 
 var dataVariant = '';
 
-if (false) {
+if (true) {
 	if (mobile) {
 		dataVariant = '.astc';
 	}
@@ -181,7 +181,7 @@ window.onerror = function(e) {
 	]));
 }
 
-Module['UE4_MultiThreaded'] = false && detectWasmThreads();
+Module['UE4_MultiThreaded'] = true && detectWasmThreads();
 
 
 // ================================================================================
@@ -453,8 +453,7 @@ Module['UE4_fullscreenFilteringMode'] = 0;
 
 var enableReadFromIndexedDB = (location.search.indexOf('noidbread') == -1);
 var enableWriteToIndexedDB = enableReadFromIndexedDB && (location.search.indexOf('noidbwrite') == -1);
-enableReadFromIndexedDB = false;
-enableWriteToIndexedDB = false;
+
 
 if (!enableReadFromIndexedDB) console.log('Running with IndexedDB access disabled.');
 else if (!enableWriteToIndexedDB) console.log('Running in read-only IndexedDB access mode.');
