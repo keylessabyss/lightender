@@ -128,7 +128,7 @@ html, body, .container {
 }
 
 /* these styles convert the "blue buttons" into transparent buttons which are more subtle and less distracting */
-
+/*
 .btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
 	background-color: transparent;
 	border-color: transparent;
@@ -148,7 +148,7 @@ html, body, .container {
 	outline: none !important;
 	box-shadow: none;
 }
-
+*/
 
 /** these styles hide the text on each button, leaving just the icon */
 
