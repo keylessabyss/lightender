@@ -75,7 +75,7 @@ var Module = {
 	assetDownloadProgress: {}, // Track how many bytes of each needed asset has been downloaded so far.
 
 	UE4_indexedDBName: 'UE4_assetDatabase_Lightender', // this should be an ascii ID string without special characters that is unique to the project that is being packaged
-	UE4_indexedDBVersion: 202603300658, // Bump this number to invalidate existing IDB storages in browsers.
+	UE4_indexedDBVersion: 202603300746, // Bump this number to invalidate existing IDB storages in browsers.
 };
 
 
@@ -357,7 +357,7 @@ function resizeCanvas(aboutToEnterFullscreen) {
 	
 	// Compute the unconstrained size for the div that encloses the canvas, in CSS pixel units.
 	var cssWidth = mainAreaRect.right - mainAreaRect.left;
-	var cssHeight = Math.max(minimumCanvasHeightCssPixels, mainAreaRect.bottom - mainAreaRect.top, window.innerHeight * minimumCanvasHeightFractionOfBrowserWindowHeight - (true ? 0 : buttonAreaRect.height));
+	var cssHeight = Math.max(minimumCanvasHeightCssPixels, mainAreaRect.bottom - mainAreaRect.top, window.innerHeight * minimumCanvasHeightFractionOfBrowserWindowHeight - (false ? 0 : buttonAreaRect.height));
 
 	if (canvasWindowedScaleMode == 3/*NONE*/) {
 		// In fixed display mode, render to a statically determined WebGL render target size.
