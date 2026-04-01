@@ -103,10 +103,10 @@ html, body, .container {
 }
 
 .buttonarea {
-	/*
+	
 	position: relative;
 	top: -50px;
-	*/
+	
 	border-top: 0px;
 	border-bottom: 0px;
 	padding: 0px;
