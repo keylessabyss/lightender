@@ -45,7 +45,7 @@ const explicitlyUseWebGL1 = (location.search.indexOf('webgl1') != -1);
 // When hosting UE4 builds live on a production CDN, compression should always be enabled,
 // since uncompressed files are too huge to be downloaded over the web.
 // Please view tip in "Project Setting" for more information.
-const serveCompressedAssets = true;
+const serveCompressedAssets = false;
 
 // "Project Settings" -> Project -> Packaging -> "Use Pak File"
 // For the large .data file, there's two ways to manage compression: either UE4 UnrealPak tool can compress it in engine, or
@@ -54,10 +54,8 @@ const serveCompressedAssets = true;
 // If true, serve out 'UE4Game.data.gz', if false, serve out 'UE4Game.data'.
 //const dataFileIsGzipCompressed = false;
 
-console.log("Fork of Unreal Engine 4.27.2 with HTML5 ES3 (WebGL 2) platform - see https://github.com/SpeculativeCoder/UnrealEngine-HTML5-ES3 for more information.");
-
-console.log("Emscripten version: E:/UE4_KeylessAbyss/UnrealEngine-4.27-html5-es3/Engine/Platforms/HTML5/Build/emsdk/emsdk-4.0.12/upstream/emscripten");
-console.log("Emscripten configuration: E:/UE4_KeylessAbyss/UnrealEngine-4.27-html5-es3/Engine/Platforms/HTML5/Build/emsdk/emsdk-4.0.12/.emscripten");
+console.log("Emscripten version: E:/EpicGames/UE_4.23/Engine/Extras/ThirdPartyNotUE/emsdk/emscripten/1.38.31");
+console.log("Emscripten configuration: E:/EpicGames/UE_4.23/Engine/Intermediate/Build/HTML5/.emscripten");
 
 
 
@@ -74,8 +72,8 @@ var Module = {
 
 	assetDownloadProgress: {}, // Track how many bytes of each needed asset has been downloaded so far.
 
-	UE4_indexedDBName: 'UE4_assetDatabase_Lightender', // this should be an ascii ID string without special characters that is unique to the project that is being packaged
-	UE4_indexedDBVersion: 202606232344, // Bump this number to invalidate existing IDB storages in browsers.
+	UE4_indexedDBName: 'UE4_assetDatabase_MhLightender', // this should be an ascii ID string without special characters that is unique to the project that is being packaged
+	UE4_indexedDBVersion: 202610251328, // Bump this number to invalidate existing IDB storages in browsers.
 };
 
 
@@ -84,55 +82,13 @@ var Module = {
 // ================================================================================
 // *** HTML5 UE4 ***
 
-var sessionStorageCommandLine = null;
-// try to get the command line from a session storage key?
-if ('') {
-	var sessionStorageCommandLine = window.sessionStorage.getItem('');
-	//if (sessionStorageCommandLine) {
-	//	console.log("sessionStorageCommandLine: " + sessionStorageCommandLine);
-	//}
-}
-
-Module.arguments = sessionStorageCommandLine != null ? [sessionStorageCommandLine] : ['../../../Lightender/Lightender.uproject','-stdout',];
+Module.arguments = ['../../../MhLightender/MhLightender.uproject','-stdout',];
 
 // UE4 Editor or UE4 Frontend with assets "cook on the fly"?
 if (location.host != "" && (location.search.indexOf('cookonthefly') != -1)) {
 	Module.arguments.push("'-filehostIp=" + location.protocol + "//" + location.host + "'");
 }
 
-if ('') {
-	var sessionStorageWebSocketUrl = window.sessionStorage.getItem('');
-	//if (sessionStorageWebSocketUrl) {
-	//	console.log("sessionStorageWebSocketUrl: " + sessionStorageWebSocketUrl);
-	//}
-	Module['websocket'] = Module['websocket'] || {};
-	Module['websocket']['url'] = sessionStorageWebSocketUrl;
-}
-
-var userAgent = navigator.userAgent || '';
-console.log("userAgent: " + userAgent);
-
-// TODO: customizable regex for mobile useragent?
-var iPhone = userAgent.indexOf('iPhone') != -1;
-var iPad = userAgent.indexOf('iPad') != -1;
-var android = userAgent.indexOf('Android') != -1;
-
-console.log("iPhone: " + iPhone);
-console.log("iPad: " + iPad);
-console.log("android: " + android);
-
-var mobile = iPhone || iPad || android;
-
-console.log("mobile: " + mobile);
-
-var dataVariant = '';
-
-if (false) {
-	if (mobile) {
-		dataVariant = '.astc';
-	}
-	console.log("dataVariant: " + dataVariant);
-}
 
 var UE4 = {
 	on_fatal: function() {
@@ -325,16 +281,16 @@ var canvasWindowedUseHighDpi = true;
 // If canvasWindowedScaleMode == 2 (ASPECT), this size defines only the aspect ratio
 //                                           that the canvas will be constrained to.
 // If canvasWindowedScaleMode == 1 (STRETCH), these size values are ignored.
-var canvasAspectRatioWidth = 1280; // 1366;
-var canvasAspectRatioHeight = 720; // 768;
+var canvasAspectRatioWidth = 1366;
+var canvasAspectRatioHeight = 768;
 
 
 // The resizeCanvas() function recomputes the canvas size on the page as the user changes
 // the browser window size.
 function resizeCanvas(aboutToEnterFullscreen) {
 	// Configuration variables, feel free to play around with these to tweak.
-	var minimumCanvasHeightCssPixels = 180; // 480; // the visible size of the canvas should always be at least this high (in CSS pixels)
-	var minimumCanvasHeightFractionOfBrowserWindowHeight = 1.0; // and also vertically take up this much % of the total browser client area height.
+	var minimumCanvasHeightCssPixels = 480; // the visible size of the canvas should always be at least this high (in CSS pixels)
+	var minimumCanvasHeightFractionOfBrowserWindowHeight = 0.65; // and also vertically take up this much % of the total browser client area height.
 
 	if (aboutToEnterFullscreen && !aboutToEnterFullscreen.type) { // UE4 engine is calling this function right before entering fullscreen?
 		// If you want to perform specific resolution setup here, do so by setting Module['canvas'].width x Module['canvas'].height now,
@@ -350,14 +306,11 @@ function resizeCanvas(aboutToEnterFullscreen) {
 	}
 
 	var mainArea = document.getElementById('mainarea');
-	var mainAreaRect = mainArea.getBoundingClientRect();
+	var canvasRect = mainArea.getBoundingClientRect();
 
-	var buttonArea = document.getElementById('buttonarea');
-	var buttonAreaRect = buttonArea.getBoundingClientRect();
-	
 	// Compute the unconstrained size for the div that encloses the canvas, in CSS pixel units.
-	var cssWidth = mainAreaRect.right - mainAreaRect.left;
-	var cssHeight = Math.max(minimumCanvasHeightCssPixels, mainAreaRect.bottom - mainAreaRect.top, window.innerHeight * minimumCanvasHeightFractionOfBrowserWindowHeight - (true ? 0 : buttonAreaRect.height));
+	var cssWidth = canvasRect.right - canvasRect.left;
+	var cssHeight = Math.max(minimumCanvasHeightCssPixels, canvasRect.bottom - canvasRect.top, window.innerHeight * minimumCanvasHeightFractionOfBrowserWindowHeight);
 
 	if (canvasWindowedScaleMode == 3/*NONE*/) {
 		// In fixed display mode, render to a statically determined WebGL render target size.
@@ -417,7 +370,6 @@ Module['UE4_resizeCanvas'] = resizeCanvas;
 // 5: UE4 should discard this input event, and suppress browser default navigation for the event.
 Module['UE4_keyEvent'] = function(eventType, key, virtualKeyCode, domPhysicalKeyCode, keyEventStruct) { return 0; }
 Module['UE4_mouseEvent'] = function(eventType, x, y, button, buttons, mouseEventStruct) { return 0; }
-Module['UE4_touchEvent'] = function(eventType, touchEventStruct) { return 0; }
 Module['UE4_wheelEvent'] = function(eventType, x, y, button, buttons, deltaX, deltaY, wheelEventStruct) { return 0; }
 
 
@@ -453,10 +405,11 @@ Module['UE4_fullscreenFilteringMode'] = 0;
 
 var enableReadFromIndexedDB = (location.search.indexOf('noidbread') == -1);
 var enableWriteToIndexedDB = enableReadFromIndexedDB && (location.search.indexOf('noidbwrite') == -1);
+enableReadFromIndexedDB = false;
+enableWriteToIndexedDB = false;
 
-
-if (!enableReadFromIndexedDB) console.log('Running with IndexedDB access disabled.');
-else if (!enableWriteToIndexedDB) console.log('Running in read-only IndexedDB access mode.');
+if (!enableReadFromIndexedDB) showWarningRibbon('Running with IndexedDB access disabled.');
+else if (!enableWriteToIndexedDB) showWarningRibbon('Running in read-only IndexedDB access mode.');
 
 
 function getIDBRequestErrorString(req) {
@@ -474,7 +427,7 @@ function formatBytes(bytes) {
 function reportDataBytesStoredInIndexedDB(deltaBytes) {
 	if (deltaBytes === null) Module['dataBytesStoredInIndexedDB'] = 0; // call with deltaBytes == null to report that DB was cleared.
 	else Module['dataBytesStoredInIndexedDB'] += deltaBytes;
-	document.getElementById('clear_indexeddb').title = 'Clear IndexedDB (' + formatBytes(Module['dataBytesStoredInIndexedDB']) + ')';
+	document.getElementById('clear_indexeddb').innerText = 'Clear IndexedDB (' + formatBytes(Module['dataBytesStoredInIndexedDB']) + ')';
 }
 
 function deleteIndexedDBStorage(dbName, onsuccess, onerror, onblocked) {
@@ -502,10 +455,10 @@ function storeToIndexedDB(db, key, value) {
 		if (!enableWriteToIndexedDB) return reject('storeToIndexedDB: IndexedDB writes disabled by "?noidbwrite" option');
 		function fail(e) {
 			console.error('Failed to store file ' + key + ' to IndexedDB storage! error: ' + e);
-			//if (!Module['idberrorShown']) {
-			//	showWarningRibbon('Failed to store file ' + key + ' to IndexedDB, error: ' + e);
-			//	Module['idberrorShown'] = true;
-			//}
+			if (!Module['idberrorShown']) {
+				showWarningRibbon('Failed to store file ' + key + ' to IndexedDB, error: ' + e);
+				Module['idberrorShown'] = true;
+			}
 			return reject(e);
 		}
 		if (!db) return fail('IndexedDB not available!');
@@ -536,10 +489,10 @@ function fetchFromIndexedDB(db, key) {
 		function fail(e) {
 			console.error('Failed to read file ' + key + ' from IndexedDB storage! error:');
 			console.error(e);
-			//if (!Module['idberrorShown']) {
-			//	showWarningRibbon('Failed to read file ' + key + ' from IndexedDB, error: ' + e);
-			//	Module['idberrorShown'] = true;
-			//}
+			if (!Module['idberrorShown']) {
+				showWarningRibbon('Failed to read file ' + key + ' from IndexedDB, error: ' + e);
+				Module['idberrorShown'] = true;
+			}
 			return reject(e);
 		}
 		if (!db) return fail('IndexedDB not available!');
@@ -630,7 +583,7 @@ Module.locateFile = function(name) {
 	// uncompressing very large gzip files may slow down startup times.
 //	if (!dataFileIsGzipCompressed && name.split('.').slice(-1)[0] == 'data') serveGzipped = false;
 
-	return serveGzipped ? (name + '.gz') : name;
+	return serveGzipped ? (name + 'gz') : name;
 };
 
 // see site/source/docs/api_reference/module.rst for details
@@ -895,23 +848,6 @@ function download(url, responseType) {
 			if (xhr.status == 0 || (xhr.status >= 200 && xhr.status < 300)) {
 				var len = xhr.response.size || xhr.response.byteLength;
 				reportDownloadProgress(url, len, len, true);
-				// try to use DecompressionStream to decompress the data in the case where header was not set properly?
-				if (url.endsWith('gz') && xhr.getResponseHeader('Content-Encoding') != 'gzip' && typeof(DecompressionStream) == 'function' && (xhr.responseType == 'blob' || xhr.responseType == 'arraybuffer')) {
-					//console.warn('Using DecompressionStream to decompress ' + xhr.responseType + ' of gzipped file ' + url);
-					var readableStream = xhr.responseType == 'blob' ? xhr.response.stream() : new Response(xhr.response).body;
-					//console.warn(readableStream);
-					var decompressedReadableStream = readableStream.pipeThrough(new DecompressionStream('gzip'));
-					//console.warn(decompressedReadableStream);
-					var response = new Response(decompressedReadableStream);
-					//console.warn(response);
-					var promise = xhr.responseType == 'blob' ? response.blob() : response.arrayBuffer();
-					//console.warn(result);
-					return promise.then(function(data) { 
-						//console.warn('data'); 
-						//console.warn(data); 
-						resolve(data);
-					});
-				}
 				resolve(xhr.response);
 			} else {
 				taskFinished(TASK_DOWNLOADING, 'HTTP error ' + (xhr.status || 404) + ' ' + xhr.statusText + ' on file ' + url);
@@ -921,9 +857,8 @@ function download(url, responseType) {
 				});
 			}
 		};
-		var contentLength = 1;
 		xhr.onprogress = function(p) {
-			reportDownloadProgress(url, p.loaded, p.lengthComputable ? p.total : contentLength);
+			if (p.lengthComputable) reportDownloadProgress(url, p.loaded, p.total);
 		};
 		xhr.onerror = function(e) {
 			var isFileProtocol = url.indexOf('file://') == 0 || location.protocol.indexOf('file') != -1;
@@ -935,24 +870,18 @@ function download(url, responseType) {
 			});
 		};
 		xhr.onreadystatechange = function() {
-			if (xhr.readyState == xhr.HEADERS_RECEIVED) {
-				contentLength = Number(xhr.getResponseHeader('Content-Length')) || 1;
+			if (xhr.readyState >= xhr.HEADERS_RECEIVED) {
 				if (url.endsWith('gz') && (xhr.status == 0 || xhr.status == 200)) {
 					if (xhr.getResponseHeader('Content-Encoding') != 'gzip') {
 						// A fallback is to set serveCompressedAssets = false to serve uncompressed assets instead, but that is not really recommended for production use, since gzip compression shrinks
 						// download sizes so dramatically that omitting it for production is not a good idea.
-						if (typeof(DecompressionStream) == 'function' && (xhr.responseType == 'blob' || xhr.responseType == 'arraybuffer')) {
-							// DecompressionStream browser functionality is available so we will try decompressing it once download is complete - but warn anyway as it is better to use the header
-							console.warn('Downloaded a compressed file ' + url + ' without the necessary HTTP response header "Content-Encoding: gzip" specified!\nPlease configure gzip compression on this asset on the web server to serve gzipped assets!\nThis browser supports DecompressionStream so decompression will be attempted as a workaround.');
-						} else {
-							taskFinished(TASK_DOWNLOADING, 'Downloaded a compressed file ' + url + ' without the necessary HTTP response header "Content-Encoding: gzip" specified!<br>Please configure gzip compression on this asset on the web server to serve gzipped assets!<br>This browser does not appear to support DecompressionStream so decompression will not be attempted as a workaround.');
-							xhr.onload = xhr.onprogress = xhr.onerror = xhr.onreadystatechange = null; // Abandon tracking events from this XHR further.
-							xhr.abort();
-							return reject({
-								status: 406,
-								statusText: 'Not Acceptable'
-							});
-						}
+						taskFinished(TASK_DOWNLOADING, 'Downloaded a compressed file ' + url + ' without the necessary HTTP response header "Content-Encoding: gzip" specified!<br>Please configure gzip compression on this asset on the web server to serve gzipped assets!');
+						xhr.onload = xhr.onprogress = xhr.onerror = xhr.onreadystatechange = null; // Abandon tracking events from this XHR further.
+						xhr.abort();
+						return reject({
+							status: 406,
+							statusText: 'Not Acceptable'
+						});
 					}
 
 					// After enabling Content-Encoding: gzip, make sure that the appropriate MIME type is being used for the asset, i.e. the MIME
@@ -963,14 +892,13 @@ function download(url, responseType) {
 							if (url.indexOf('.js') != -1) return 'application/javascript';
 							return 'application/octet-stream';
 						}
-						console.warn('Downloaded a compressed file ' + url + ' with incorrect HTTP response header "Content-Type: ' + xhr.getResponseHeader('Content-Type') + '"!\nPlease set the MIME type of the asset to "' + expectedMimeType(url) + '".');
-						//taskFinished(TASK_DOWNLOADING, 'Downloaded a compressed file ' + url + ' with incorrect HTTP response header "Content-Type: ' + xhr.getResponseHeader('Content-Type') + '"!<br>Please set the MIME type of the asset to "' + expectedMimeType(url) + '".');
-						//xhr.onload = xhr.onprogress = xhr.onerror = xhr.onreadystatechange = null; // Abandon tracking events from this XHR further.
-						//xhr.abort();
-						//return reject({
-						//	status: 406,
-						//	statusText: 'Not Acceptable'
-						//});
+						taskFinished(TASK_DOWNLOADING, 'Downloaded a compressed file ' + url + ' with incorrect HTTP response header "Content-Type: ' + xhr.getResponseHeader('Content-Type') + '"!<br>Please set the MIME type of the asset to "' + expectedMimeType(url) + '".');
+						xhr.onload = xhr.onprogress = xhr.onerror = xhr.onreadystatechange = null; // Abandon tracking events from this XHR further.
+						xhr.abort();
+						return reject({
+							status: 406,
+							statusText: 'Not Acceptable'
+						});
 					}
 				}
 			}
@@ -987,12 +915,12 @@ function download(url, responseType) {
 // UE4 DEFAULT UX TEMPLATE
 
 function showErrorDialog(errorText) {
-	// if ( errorText.indexOf('SyntaxError: ') != -1 ) { // this may be due to caching issue -- otherwise, compile time would have caught this
-	// 	errorText = "NOTE: attempting to flush cache and force reload...<br>Please standby...";
-	// 	setTimeout(function() {
-	// 		location.reload(true);
-	// 	}, 2000); // 2 seconds
-	// }
+	if ( errorText.indexOf('SyntaxError: ') != -1 ) { // this may be due to caching issue -- otherwise, compile time would have caught this
+		errorText = "NOTE: attempting to flush cache and force reload...<br>Please standby...";
+		setTimeout(function() {
+			location.reload(true);
+		}, 2000); // 2 seconds
+	}
 	console.error('error: ' + errorText);
 	var existingErrorDialog = document.getElementById('errorDialog');
 	if (existingErrorDialog) {
@@ -1059,20 +987,10 @@ function postRunEmscripten() {
 	taskFinished(TASK_MAIN);
 	$("#compilingmessage").remove();
 
-	// show appropriate buttons
-	$("#exit_pointerlock").show();
-	$("#pause").show();
-	$("#clear_indexeddb").show();
-
-	// never show fullscreen button on iPhone Safari
-	if (!iPhone) {
-		$("#fullscreen_request").show();
-	}
-
 	// The default Emscripten provided canvas resizing behavior is not needed,
 	// since we are controlling the canvas sizes here, so stub those functions out.
-	//Browser.updateCanvasDimensions = function() {};
-	//Browser.setCanvasSize = function() {};
+	Browser.updateCanvasDimensions = function() {};
+	Browser.setCanvasSize = function() {};
 
 	// If you'd like to configure the initial canvas size to render using the resolution
 	// defined in UE4 DefaultEngine.ini [SystemSettings] r.setRes=WidthxHeight,
@@ -1215,7 +1133,7 @@ $(document).ready(function() {
 				return { db: db, wasmBytes: wasmBytes, fromIndexedDB: true };
 			});
 		}).catch(function() {
-			return download(Module.locateFile('Lightender.wasm'), 'arraybuffer').then(function(wasmBytes) {
+			return download(Module.locateFile('MhLightender.wasm'), 'arraybuffer').then(function(wasmBytes) {
 				return { db: db, wasmBytes: wasmBytes, fromIndexedDB: false };
 			});
 		});
@@ -1227,7 +1145,7 @@ $(document).ready(function() {
 
 		// ----------------------------------------
 		// MAIN JS
-		var mainJsDownload = fetchOrDownloadAndStore(db, Module.locateFile('Lightender.js'), 'blob').then(function(data) {
+		var mainJsDownload = fetchOrDownloadAndStore(db, Module.locateFile('MhLightender.js'), 'blob').then(function(data) {
 				Module['mainScriptUrlOrBlob'] = data;
 				return addScriptToDom(data).then(function() {
 					addRunDependency('wait-for-compiled-code');
@@ -1236,22 +1154,22 @@ $(document).ready(function() {
 
 		// ----------------------------------------
 		// MORE JS
-		var dataJsDownload = fetchOrDownloadAndStore(db, Module.locateFile('Lightender'+dataVariant+'.data.js'));
+		var dataJsDownload = fetchOrDownloadAndStore(db, Module.locateFile('MhLightender.data.js'));
 		var utilityJsDownload = fetchOrDownloadAndStore(db, Module.locateFile('Utility.js')).then(addScriptToDom);
 		var dataDownload =
 /* // The following code would download and store the .data file as a Blob, which should be more efficient than loading an ArrayBuffer. However that seems to be buggy, so avoid it for now.
-			fetchOrDownloadAndStore(db, Module.locateFile('Lightender.data')).then(function(dataBlob) {
+			fetchOrDownloadAndStore(db, Module.locateFile('MhLightender.data')).then(function(dataBlob) {
 				return readBlobToArrayBuffer(dataBlob).then(function(dataArrayBuffer) {
 					Module['preloadedPackages'] = {};
-					Module['preloadedPackages'][Module.locateFile('Lightender.data')] = dataArrayBuffer;
+					Module['preloadedPackages'][Module.locateFile('MhLightender.data')] = dataArrayBuffer;
 					return dataJsDownload.then(addScriptToDom);
 				})
 			});
 */
 // Instead as a fallback, download as ArrayBuffer. (TODO: Figure out the bugs with the above, and switch to using that one instead)
-			fetchOrDownloadAndStore(db, Module.locateFile('Lightender'+dataVariant+'.data'), 'arraybuffer').then(function(dataArrayBuffer) {
+			fetchOrDownloadAndStore(db, Module.locateFile('MhLightender.data'), 'arraybuffer').then(function(dataArrayBuffer) {
 				Module['preloadedPackages'] = {};
-				Module['preloadedPackages'][Module.locateFile('Lightender'+dataVariant+'.data')] = dataArrayBuffer;
+				Module['preloadedPackages'][Module.locateFile('MhLightender.data')] = dataArrayBuffer;
 				return dataJsDownload.then(addScriptToDom);
 			});
 
@@ -1273,7 +1191,7 @@ $(document).ready(function() {
 
 		// ----------------------------------------
 		// WAIT FOR DOWNLOADS AND COMPILES
-		Promise.all([mainCompiledCode, mainJsDownload, utilityJsDownload, dataDownload, compiledCodeInstantiateAction, compileShaders]).then(function() {
+		Promise.all([mainCompiledCode, mainJsDownload, dataJsDownload, utilityJsDownload, dataDownload, compiledCodeInstantiateAction, compileShaders]).then(function() {
 			if (!precompileShaders) {
 				Module['precompiledShaders'] = Module['precompiledPrograms'] = Module['preinitializedWebGLContext'] = Module['glIDCounter'] = Module['precompiledUniforms'] = null;
 			}
@@ -1292,3 +1210,4 @@ $(document).ready(function() {
 		withIndexedDB(null);
 	});
 });
+
