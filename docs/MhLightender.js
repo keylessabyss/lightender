@@ -695,7 +695,7 @@ function updateGlobalBufferViews() {
  Module["HEAPF64"] = HEAPF64 = new Float64Array(buffer);
 }
 
-var STACK_BASE = 16118224, STACK_MAX = 21361104, DYNAMIC_BASE = 21361104, DYNAMICTOP_PTR = 16118192;
+var STACK_BASE = 16126608, STACK_MAX = 21369488, DYNAMIC_BASE = 21369488, DYNAMICTOP_PTR = 16126576;
 
 assert(STACK_BASE % 16 === 0, "stack must start aligned");
 
@@ -1467,7 +1467,7 @@ __ATINIT__.push({
  }
 });
 
-var tempDoublePtr = 16118208;
+var tempDoublePtr = 16126592;
 
 assert(tempDoublePtr % 8 == 0);
 
@@ -15673,9 +15673,9 @@ function _glViewport(x0, x1, x2, x3) {
  GLctx["viewport"](x0, x1, x2, x3);
 }
 
-var ___tm_current = 16118048;
+var ___tm_current = 16126432;
 
-var ___tm_timezone = (stringToUTF8("GMT", 16118096, 4), 16118096);
+var ___tm_timezone = (stringToUTF8("GMT", 16126480, 4), 16126480);
 
 function _gmtime_r(time, tmPtr) {
  var date = new Date(HEAP32[time >> 2] * 1e3);
