@@ -18,8 +18,8 @@ Module.expectedDataFileDownloads++;
     } else {
       throw 'using preloaded data can only be done on a web page or in a web worker';
     }
-    var PACKAGE_NAME = 'E:/EpicGames/UE_4.23/MhLightender/Binaries/HTML5/MhLightender.data';
-    var REMOTE_PACKAGE_BASE = 'MhLightender.data';
+    var PACKAGE_NAME = 'E:/EpicGames/UE_4.23/MhLightender/Binaries/HTML5/MhLightender-HTML5-Shipping.data';
+    var REMOTE_PACKAGE_BASE = 'MhLightender-HTML5-Shipping.data';
     if (typeof Module['locateFilePackage'] === 'function' && !Module['locateFile']) {
       Module['locateFile'] = Module['locateFilePackage'];
       err('warning: you defined Module.locateFilePackage, that has been renamed to Module.locateFile (using your locateFilePackage for now)');
@@ -149,10 +149,10 @@ Module['FS_createPath']('/MhLightender/Content', 'Paks', true, true);
           for (var i = 0; i < files.length; ++i) {
             DataRequest.prototype.requests[files[i].filename].onload();
           }
-              Module['removeRunDependency']('datafile_E:/EpicGames/UE_4.23/MhLightender/Binaries/HTML5/MhLightender.data');
+              Module['removeRunDependency']('datafile_E:/EpicGames/UE_4.23/MhLightender/Binaries/HTML5/MhLightender-HTML5-Shipping.data');
 
     };
-    Module['addRunDependency']('datafile_E:/EpicGames/UE_4.23/MhLightender/Binaries/HTML5/MhLightender.data');
+    Module['addRunDependency']('datafile_E:/EpicGames/UE_4.23/MhLightender/Binaries/HTML5/MhLightender-HTML5-Shipping.data');
   
     if (!Module.preloadResults) Module.preloadResults = {};
   
@@ -173,6 +173,6 @@ Module['FS_createPath']('/MhLightender/Content', 'Paks', true, true);
   }
 
  }
- loadPackage({"files": [{"start": 0, "audio": 0, "end": 53, "filename": "/Manifest_NonUFSFiles_HTML5.txt"}, {"start": 53, "audio": 0, "end": 97, "filename": "/UE4CommandLine.txt"}, {"start": 97, "audio": 0, "end": 83998897, "filename": "/MhLightender/Content/Paks/MhLightender-HTML5.pak"}], "remote_package_size": 83998897, "package_uuid": "fec49201-6fb1-4a5f-bb40-9bd8ad1b3e7d"});
+ loadPackage({"files": [{"start": 0, "audio": 0, "end": 53, "filename": "/Manifest_NonUFSFiles_HTML5.txt"}, {"start": 53, "audio": 0, "end": 97, "filename": "/UE4CommandLine.txt"}, {"start": 97, "audio": 0, "end": 75561362, "filename": "/MhLightender/Content/Paks/MhLightender-HTML5.pak"}], "remote_package_size": 75561362, "package_uuid": "67b2e73c-5916-4a6f-9514-1ca5ac0ac23a"});
 
 })();

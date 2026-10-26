@@ -54,8 +54,8 @@ const serveCompressedAssets = false;
 // If true, serve out 'UE4Game.data.gz', if false, serve out 'UE4Game.data'.
 //const dataFileIsGzipCompressed = false;
 
-console.log("Emscripten version: E:/EpicGames/UE_4.23/Engine/Extras/ThirdPartyNotUE/emsdk/emscripten/1.38.31");
-console.log("Emscripten configuration: E:/EpicGames/UE_4.23/Engine/Intermediate/Build/HTML5/.emscripten");
+console.log("Emscripten version: 1.38.31");
+console.log("Emscripten configuration: ");
 
 
 
@@ -73,7 +73,7 @@ var Module = {
 	assetDownloadProgress: {}, // Track how many bytes of each needed asset has been downloaded so far.
 
 	UE4_indexedDBName: 'UE4_assetDatabase_MhLightender', // this should be an ascii ID string without special characters that is unique to the project that is being packaged
-	UE4_indexedDBVersion: 202610261225, // Bump this number to invalidate existing IDB storages in browsers.
+	UE4_indexedDBVersion: 202610261746, // Bump this number to invalidate existing IDB storages in browsers.
 };
 
 
@@ -405,8 +405,7 @@ Module['UE4_fullscreenFilteringMode'] = 0;
 
 var enableReadFromIndexedDB = (location.search.indexOf('noidbread') == -1);
 var enableWriteToIndexedDB = enableReadFromIndexedDB && (location.search.indexOf('noidbwrite') == -1);
-enableReadFromIndexedDB = false;
-enableWriteToIndexedDB = false;
+
 
 if (!enableReadFromIndexedDB) showWarningRibbon('Running with IndexedDB access disabled.');
 else if (!enableWriteToIndexedDB) showWarningRibbon('Running in read-only IndexedDB access mode.');
@@ -603,7 +602,7 @@ Module.getPreloadedPackage = function(remotePackageName, remotePackageSize) {
 Module['instantiateWasm'] = function(info, receiveInstance) {
 	Module['wasmDownloadAction'].then(function(downloadResults) {
 		taskProgress(TASK_COMPILING);
-		var wasmInstantiate = WebAssembly.instantiate(downloadResults.wasmModule || new Uint8Array(downloadResults.wasmBytes), info);
+		var wasmInstantiate = WebAssembly.instantiate(new Uint8Array(downloadResults.wasmBytes), info);
 		return wasmInstantiate.then(function(output) {
 			var instance = output.instance || output;
 			var module = output.module;
@@ -611,11 +610,11 @@ Module['instantiateWasm'] = function(info, receiveInstance) {
 			Module['wasmInstantiateActionResolve'](instance);
 			receiveInstance(instance, module);
 
-			// After a successful instantiation, attempt to save the compiled Wasm Module object to IndexedDB.
+			// Store the raw Wasm bytes in IndexedDB. Some browsers cannot structured-clone
+			// WebAssembly.Module objects, which otherwise produces a DataCloneError.
 			if (!downloadResults.fromIndexedDB) {
-				storeToIndexedDB(downloadResults.db, 'wasmModule', module).catch(function() {
-					// If the browser did not support storing Wasm Modules to IndexedDB, try to store the Wasm instance instead.
-					return storeToIndexedDB(downloadResults.db, 'wasmBytes', downloadResults.wasmBytes);
+				storeToIndexedDB(downloadResults.db, 'wasmBytes', downloadResults.wasmBytes).catch(function(error) {
+					console.error('Failed to store Wasm bytes to IndexedDB! ' + error);
 				});
 			}
 		});
@@ -1126,14 +1125,10 @@ $(document).ready(function() {
 
 		// ----------------------------------------
 		// WASM
-		var mainCompiledCode = fetchFromIndexedDB(db, 'wasmModule').then(function(wasmModule) {
-			return { db: db, wasmModule: wasmModule, fromIndexedDB: true };
+		var mainCompiledCode = fetchFromIndexedDB(db, 'wasmBytes').then(function(wasmBytes) {
+			return { db: db, wasmBytes: wasmBytes, fromIndexedDB: true };
 		}).catch(function() {
-			return fetchFromIndexedDB(db, 'wasmBytes').then(function(wasmBytes) {
-				return { db: db, wasmBytes: wasmBytes, fromIndexedDB: true };
-			});
-		}).catch(function() {
-			return download(Module.locateFile('MhLightender.wasm'), 'arraybuffer').then(function(wasmBytes) {
+			return download(Module.locateFile('MhLightender-HTML5-Shipping.wasm'), 'arraybuffer').then(function(wasmBytes) {
 				return { db: db, wasmBytes: wasmBytes, fromIndexedDB: false };
 			});
 		});
@@ -1145,7 +1140,7 @@ $(document).ready(function() {
 
 		// ----------------------------------------
 		// MAIN JS
-		var mainJsDownload = fetchOrDownloadAndStore(db, Module.locateFile('MhLightender.js'), 'blob').then(function(data) {
+		var mainJsDownload = fetchOrDownloadAndStore(db, Module.locateFile('MhLightender-HTML5-Shipping.js'), 'blob').then(function(data) {
 				Module['mainScriptUrlOrBlob'] = data;
 				return addScriptToDom(data).then(function() {
 					addRunDependency('wait-for-compiled-code');
@@ -1154,22 +1149,22 @@ $(document).ready(function() {
 
 		// ----------------------------------------
 		// MORE JS
-		var dataJsDownload = fetchOrDownloadAndStore(db, Module.locateFile('MhLightender.data.js'));
+		var dataJsDownload = fetchOrDownloadAndStore(db, Module.locateFile('MhLightender-HTML5-Shipping.data.js'));
 		var utilityJsDownload = fetchOrDownloadAndStore(db, Module.locateFile('Utility.js')).then(addScriptToDom);
 		var dataDownload =
 /* // The following code would download and store the .data file as a Blob, which should be more efficient than loading an ArrayBuffer. However that seems to be buggy, so avoid it for now.
-			fetchOrDownloadAndStore(db, Module.locateFile('MhLightender.data')).then(function(dataBlob) {
+			fetchOrDownloadAndStore(db, Module.locateFile('MhLightender-HTML5-Shipping.data')).then(function(dataBlob) {
 				return readBlobToArrayBuffer(dataBlob).then(function(dataArrayBuffer) {
 					Module['preloadedPackages'] = {};
-					Module['preloadedPackages'][Module.locateFile('MhLightender.data')] = dataArrayBuffer;
+					Module['preloadedPackages'][Module.locateFile('MhLightender-HTML5-Shipping.data')] = dataArrayBuffer;
 					return dataJsDownload.then(addScriptToDom);
 				})
 			});
 */
 // Instead as a fallback, download as ArrayBuffer. (TODO: Figure out the bugs with the above, and switch to using that one instead)
-			fetchOrDownloadAndStore(db, Module.locateFile('MhLightender.data'), 'arraybuffer').then(function(dataArrayBuffer) {
+			fetchOrDownloadAndStore(db, Module.locateFile('MhLightender-HTML5-Shipping.data'), 'arraybuffer').then(function(dataArrayBuffer) {
 				Module['preloadedPackages'] = {};
-				Module['preloadedPackages'][Module.locateFile('MhLightender.data')] = dataArrayBuffer;
+				Module['preloadedPackages'][Module.locateFile('MhLightender-HTML5-Shipping.data')] = dataArrayBuffer;
 				return dataJsDownload.then(addScriptToDom);
 			});
 
