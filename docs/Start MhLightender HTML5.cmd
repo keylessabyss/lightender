@@ -1,35 +1,27 @@
 @echo off
-setlocal EnableExtensions
+setlocal
 cd /d "%~dp0"
-
 set "PORT=8090"
-set "ENTRY="
-
-if exist "index.html" set "ENTRY=index.html"
-if not defined ENTRY for %%F in (*.html) do if not defined ENTRY set "ENTRY=%%~nxF"
-
-if not defined ENTRY (
-    echo ERROR: No HTML entry file was found in this folder.
-    pause
-    exit /b 1
+if not exist "index.html" (
+  echo ERROR: index.html not found in %CD%
+  echo Place this launcher alongside your HTML5 game's index.html.
+  pause
+  exit /b 1
 )
-
-if not exist "HTML5LaunchHelper.exe" (
-    echo ERROR: HTML5LaunchHelper.exe was not found in this folder.
-    echo Run this launcher from the packed HTML5 output folder.
-    pause
-    exit /b 1
+where node >nul 2>&1
+if errorlevel 1 (
+  echo ERROR: Node.js is not installed or not on PATH.
+  pause
+  exit /b 1
 )
-
 netstat -ano -p tcp | findstr /R /C:":%PORT% .*LISTENING" >nul
 if not errorlevel 1 (
-    echo ERROR: Port %PORT% is already in use.
-    echo Change PORT in this file or close the existing server.
-    pause
-    exit /b 1
+  echo ERROR: Port %PORT% is already in use.
+  echo Close the existing server or change PORT in this file.
+  pause
+  exit /b 1
 )
-
-echo Serving "%CD%" at http://127.0.0.1:%PORT%/%ENTRY%
-start "" "http://127.0.0.1:%PORT%/%ENTRY%"
-HTML5LaunchHelper.exe -ServerRoot="%CD%" -ServerPort=%PORT%
+echo Serving %CD% at http://localhost:%PORT%/index.html
+start "" "http://localhost:%PORT%/index.html"
+call npx --yes serve@14.2.5 . -l tcp://127.0.0.1:%PORT% --no-clipboard
 pause
