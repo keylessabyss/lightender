@@ -73,7 +73,7 @@ var Module = {
 	assetDownloadProgress: {}, // Track how many bytes of each needed asset has been downloaded so far.
 
 	UE4_indexedDBName: 'UE4_assetDatabase_MhLightender', // this should be an ascii ID string without special characters that is unique to the project that is being packaged
-	UE4_indexedDBVersion: 202610270818, // Bump this number to invalidate existing IDB storages in browsers.
+	UE4_indexedDBVersion: 202610270925, // Bump this number to invalidate existing IDB storages in browsers.
 };
 
 
@@ -281,16 +281,16 @@ var canvasWindowedUseHighDpi = true;
 // If canvasWindowedScaleMode == 2 (ASPECT), this size defines only the aspect ratio
 //                                           that the canvas will be constrained to.
 // If canvasWindowedScaleMode == 1 (STRETCH), these size values are ignored.
-var canvasAspectRatioWidth = 1366;
-var canvasAspectRatioHeight = 768;
+var canvasAspectRatioWidth = 1280;
+var canvasAspectRatioHeight = 720;
 
 
 // The resizeCanvas() function recomputes the canvas size on the page as the user changes
 // the browser window size.
 function resizeCanvas(aboutToEnterFullscreen) {
 	// Configuration variables, feel free to play around with these to tweak.
-	var minimumCanvasHeightCssPixels = 480; // the visible size of the canvas should always be at least this high (in CSS pixels)
-	var minimumCanvasHeightFractionOfBrowserWindowHeight = 0.65; // and also vertically take up this much % of the total browser client area height.
+	var minimumCanvasHeightCssPixels = 180; // the visible size of the canvas should always be at least this high (in CSS pixels)
+	var minimumCanvasHeightFractionOfBrowserWindowHeight = 1.0; // and also vertically take up this much % of the total browser client area height.
 
 	if (aboutToEnterFullscreen && !aboutToEnterFullscreen.type) { // UE4 engine is calling this function right before entering fullscreen?
 		// If you want to perform specific resolution setup here, do so by setting Module['canvas'].width x Module['canvas'].height now,
@@ -306,11 +306,13 @@ function resizeCanvas(aboutToEnterFullscreen) {
 	}
 
 	var mainArea = document.getElementById('mainarea');
-	var canvasRect = mainArea.getBoundingClientRect();
+	var mainAreaRect = mainArea.getBoundingClientRect();
+	var buttonArea = document.getElementById('buttonarea');
+	var buttonAreaRect = buttonArea ? buttonArea.getBoundingClientRect() : { height: 0 };
 
 	// Compute the unconstrained size for the div that encloses the canvas, in CSS pixel units.
-	var cssWidth = canvasRect.right - canvasRect.left;
-	var cssHeight = Math.max(minimumCanvasHeightCssPixels, canvasRect.bottom - canvasRect.top, window.innerHeight * minimumCanvasHeightFractionOfBrowserWindowHeight);
+	var cssWidth = mainAreaRect.right - mainAreaRect.left;
+	var cssHeight = Math.max(minimumCanvasHeightCssPixels, mainAreaRect.bottom - mainAreaRect.top, window.innerHeight * minimumCanvasHeightFractionOfBrowserWindowHeight - buttonAreaRect.height);
 
 	if (canvasWindowedScaleMode == 3/*NONE*/) {
 		// In fixed display mode, render to a statically determined WebGL render target size.
@@ -982,6 +984,40 @@ function addScriptToDom(scriptCode) {
 // ----------------------------------------
 // Startup task which is run after UE4 engine has launched.
 
+function requestLandscapeOrientation() {
+	// Orientation locking is optional and browser-controlled. It is only
+	// attempted from a click handler because browsers require a user gesture.
+	try {
+		var orientation = screen.orientation || screen.msOrientation || screen.mozOrientation;
+		if (orientation && orientation.lock) {
+			var lockResult = orientation.lock('landscape');
+			if (lockResult && lockResult.catch) {
+				lockResult.catch(function() {});
+			}
+		}
+	} catch (e) {
+		// Unsupported orientation locking must not prevent fullscreen.
+	}
+}
+
+function updateLandscapePrompt() {
+	var prompt = document.getElementById('landscape_prompt');
+	if (!prompt) return;
+	var isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+	prompt.style.display = isFullscreen ? 'none' : 'inline-flex';
+}
+
+function setupLandscapeControls() {
+	var startButton = document.getElementById('start_fullscreen_landscape');
+	var fullscreenButton = document.getElementById('fullscreen_request');
+	if (startButton) startButton.addEventListener('click', requestLandscapeOrientation, false);
+	if (fullscreenButton) fullscreenButton.addEventListener('click', requestLandscapeOrientation, false);
+	document.addEventListener('fullscreenchange', updateLandscapePrompt, false);
+	document.addEventListener('webkitfullscreenchange', updateLandscapePrompt, false);
+	document.addEventListener('mozfullscreenchange', updateLandscapePrompt, false);
+	document.addEventListener('MSFullscreenChange', updateLandscapePrompt, false);
+}
+
 function postRunEmscripten() {
 	taskFinished(TASK_MAIN);
 	$("#compilingmessage").remove();
@@ -1001,6 +1037,8 @@ function postRunEmscripten() {
 	// Configure the size of the canvas and display it.
 	resizeCanvas();
 	Module['canvas'].style.display = 'block';
+	setupLandscapeControls();
+	updateLandscapePrompt();
 
 	// Whenever the browser window size changes, relayout the canvas size on the page.
 	window.addEventListener('resize', resizeCanvas, false);

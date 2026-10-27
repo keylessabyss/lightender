@@ -1,23 +1,22 @@
-﻿/* CSS style sheet used with Epic Games HTML5 projects
- *
- * much of this is for UE4 development purposes.
- *
- * to create a custom CSS file for your project:
- * - make a copy of this file - or make one from scratch
- * - and put it in: "your project folder"/Build/HTML/GameX.css.template
- */
+﻿/* MhLightender HTML5 shell styling.  The game code and assets are generated
+ * by Unreal; this file controls only the browser page around the canvas. */
 
 html, body, .container {
 	height: 100%;
 	font-family: "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
+	margin: 0;
 }
 
-/*
- * Let real touch contacts reach Unreal's HTML5 input bridge.  This does not
- * turn mouse clicks into touch events; bUseMouseForTouch remains the switch
- * for that compatibility behavior.  It only prevents the browser from
- * treating a finger drag as page scrolling/zooming.
- */
+html, body {
+	width: 100%;
+	min-height: 100%;
+	background: linear-gradient(to top left, #050509, #1e1a78);
+	background: linear-gradient(to top left, black, #1e1a78);
+	overflow: hidden;
+}
+
+/* Do not let touch drags scroll the page or trigger browser zoom while the
+ * Unreal HTML5 input bridge is handling the contact. */
 html, body, #mainarea, canvas {
 	-ms-touch-action: none;
 	touch-action: none;
@@ -26,72 +25,34 @@ html, body, #mainarea, canvas {
 	-webkit-touch-callout: none;
 }
 
-.h4, h4 {
-	margin-top: 1pt;
-	margin-bottom: 1pt;
-	font-size: 10pt;
+*, *::before, *::after {
+	box-sizing: border-box;
 }
 
 .container {
 	display: table;
 	vertical-align: middle;
-	border: 0px;
-	border-spacing: 0px;
-}
-
-.glyphicon-spin {
-	animation: spin 2000ms infinite linear;
-}
-
-@keyframes spin {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(359deg);
-	}
-}
-
-@-webkit-keyframes spin {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(359deg);
-	}
+	border: 0;
+	border-spacing: 0;
 }
 
 .wrapper {
 	position: relative;
-	margin: 1em auto 10px auto;
+	margin: 0 auto;
 	text-align: center;
-	min-width: 640px;
+	min-width: 0;
 	width: 100%;
-	height: 480px; /* initial height, will be dynamically adjusted at runtime */
-	max-width: 95%;
+	height: 180px;
+	max-width: 100%;
 	display: block;
-	align-items: center;
-	position: relative;
-	text-align: center;
-	justify-content: center;
 }
 
- .emscripten {
+.emscripten {
 	padding-right: 0;
 	margin-left: auto;
 	margin-right: auto;
 	display: block;
-	display: -webkit-box;
-	display: -moz-box;
-	display: box;
-
-	-webkit-box-align: center;
-	-moz-box-align: center;
-	box-align: center;
-
-	-webkit-box-pack: center;
-	-moz-box-pack: center;
-	box-pack: center;
+	outline: none;
 }
 
 #canvas:not([fullscreen]) {
@@ -101,31 +62,93 @@ html, body, #mainarea, canvas {
 	width: 100%;
 }
 
+.buttonarea {
+	position: relative;
+	width: 100%;
+	min-height: 35px;
+	margin: 0;
+	padding: 0 8px;
+	border: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 8px;
+	z-index: 5;
+}
+
+.buttonarea .btn-primary {
+	min-width: 120px;
+	min-height: 28px;
+	padding: 3px 10px;
+	margin: 4px 0;
+	text-align: center;
+}
+
 .texthalf {
 	height: 37%;
-	border: 0px;
-	padding: 0px;
-	overflow-y: scroll;
+	border: 0;
+	padding: 0;
+	overflow-y: auto;
 	font-size: 2em;
 }
 
-.buttonarea {
-	min-height: 3%;
-	border-top: 0px;
-	border-bottom: 0px;
-	padding: 0px;
-	margin-right: 0px;
-	margin-top: 0px;
-	margin-bottom: 0px;
- }
-
-.btn { padding: 0px; text-align: center; min-width: 150px }
-.progress { background: rgba(245, 245, 245, 1); border: 0px solid rgba(245, 245, 245, 1); border-radius: 0px; height: 4px; }
-.progress-bar-custom { background: rgba(153, 153, 153, 1); }
 .centered-axis-xy {
 	position: absolute;
 	left: 50%;
 	top: 50%;
-	transform: translate(-50%,-50%);
+	transform: translate(-50%, -50%);
 }
 
+/* Browser fullscreen/orientation must start from a user gesture. */
+.landscape-prompt {
+	position: fixed;
+	top: 10px;
+	right: 10px;
+	z-index: 10000;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 8px;
+	border-radius: 4px;
+	background: rgba(17, 24, 39, 0.90);
+	color: #e5e7eb;
+	font-size: 12px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.landscape-prompt .btn {
+	min-width: 0;
+	margin: 0;
+	padding: 4px 8px;
+	font-size: 12px;
+}
+
+.landscape-prompt-text {
+	white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+	.buttonarea {
+		gap: 4px;
+		padding-left: 4px;
+		padding-right: 4px;
+	}
+
+	.buttonarea .btn-primary {
+		min-width: 0;
+		flex: 1 1 17%;
+		padding-left: 4px;
+		padding-right: 4px;
+		font-size: 12px;
+	}
+
+	.landscape-prompt-text {
+		display: none;
+	}
+
+	.landscape-prompt {
+		top: 6px;
+		right: 6px;
+	}
+}
