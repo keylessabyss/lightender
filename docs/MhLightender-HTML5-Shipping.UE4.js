@@ -73,7 +73,7 @@ var Module = {
 	assetDownloadProgress: {}, // Track how many bytes of each needed asset has been downloaded so far.
 
 	UE4_indexedDBName: 'UE4_assetDatabase_MhLightender', // this should be an ascii ID string without special characters that is unique to the project that is being packaged
-	UE4_indexedDBVersion: 202610270925, // Bump this number to invalidate existing IDB storages in browsers.
+	UE4_indexedDBVersion: 202610271159, // Bump this number to invalidate existing IDB storages in browsers.
 };
 
 
@@ -937,7 +937,10 @@ function showWarningRibbon(warningText) {
 	if (existingWarningDialog) {
 		existingWarningDialog.innerHTML += '<br>' + warningText;
 	} else {
-		$('#buttonrow').prepend('<div class="alert alert-warning centered-axis-x" role="warning" id="warningDialog" style="padding-top:5px; padding-bottom: 5px">' + warningText + '</div></div>');
+		var warningHost = document.getElementById('buttonarea') || document.getElementById('buttonrow');
+		if (warningHost) {
+			$(warningHost).prepend('<div class="alert alert-warning centered-axis-x" role="warning" id="warningDialog" style="padding-top:5px; padding-bottom: 5px">' + warningText + '</div>');
+		}
 	}
 }
 
@@ -1000,22 +1003,9 @@ function requestLandscapeOrientation() {
 	}
 }
 
-function updateLandscapePrompt() {
-	var prompt = document.getElementById('landscape_prompt');
-	if (!prompt) return;
-	var isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
-	prompt.style.display = isFullscreen ? 'none' : 'inline-flex';
-}
-
 function setupLandscapeControls() {
-	var startButton = document.getElementById('start_fullscreen_landscape');
 	var fullscreenButton = document.getElementById('fullscreen_request');
-	if (startButton) startButton.addEventListener('click', requestLandscapeOrientation, false);
 	if (fullscreenButton) fullscreenButton.addEventListener('click', requestLandscapeOrientation, false);
-	document.addEventListener('fullscreenchange', updateLandscapePrompt, false);
-	document.addEventListener('webkitfullscreenchange', updateLandscapePrompt, false);
-	document.addEventListener('mozfullscreenchange', updateLandscapePrompt, false);
-	document.addEventListener('MSFullscreenChange', updateLandscapePrompt, false);
 }
 
 function postRunEmscripten() {
@@ -1038,7 +1028,6 @@ function postRunEmscripten() {
 	resizeCanvas();
 	Module['canvas'].style.display = 'block';
 	setupLandscapeControls();
-	updateLandscapePrompt();
 
 	// Whenever the browser window size changes, relayout the canvas size on the page.
 	window.addEventListener('resize', resizeCanvas, false);

@@ -100,34 +100,6 @@ html, body, #mainarea, canvas {
 	transform: translate(-50%, -50%);
 }
 
-/* Browser fullscreen/orientation must start from a user gesture. */
-.landscape-prompt {
-	position: fixed;
-	top: 10px;
-	right: 10px;
-	z-index: 10000;
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	padding: 6px 8px;
-	border-radius: 4px;
-	background: rgba(17, 24, 39, 0.90);
-	color: #e5e7eb;
-	font-size: 12px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-}
-
-.landscape-prompt .btn {
-	min-width: 0;
-	margin: 0;
-	padding: 4px 8px;
-	font-size: 12px;
-}
-
-.landscape-prompt-text {
-	white-space: nowrap;
-}
-
 @media (max-width: 700px) {
 	.buttonarea {
 		gap: 4px;
@@ -143,12 +115,4 @@ html, body, #mainarea, canvas {
 		font-size: 12px;
 	}
 
-	.landscape-prompt-text {
-		display: none;
-	}
-
-	.landscape-prompt {
-		top: 6px;
-		right: 6px;
-	}
 }
