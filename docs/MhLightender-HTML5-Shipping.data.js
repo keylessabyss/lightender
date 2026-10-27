@@ -173,6 +173,6 @@ Module['FS_createPath']('/MhLightender/Content', 'Paks', true, true);
   }
 
  }
- loadPackage({"files": [{"start": 0, "audio": 0, "end": 53, "filename": "/Manifest_NonUFSFiles_HTML5.txt"}, {"start": 53, "audio": 0, "end": 97, "filename": "/UE4CommandLine.txt"}, {"start": 97, "audio": 0, "end": 75561362, "filename": "/MhLightender/Content/Paks/MhLightender-HTML5.pak"}], "remote_package_size": 75561362, "package_uuid": "67b2e73c-5916-4a6f-9514-1ca5ac0ac23a"});
+ loadPackage({"files": [{"start": 0, "audio": 0, "end": 53, "filename": "/Manifest_NonUFSFiles_HTML5.txt"}, {"start": 53, "audio": 0, "end": 97, "filename": "/UE4CommandLine.txt"}, {"start": 97, "audio": 0, "end": 75564996, "filename": "/MhLightender/Content/Paks/MhLightender-HTML5.pak"}], "remote_package_size": 75564996, "package_uuid": "4cfb86f3-604f-48a6-b6ef-fb7548e89b30"});
 
 })();
