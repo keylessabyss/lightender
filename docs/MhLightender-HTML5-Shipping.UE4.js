@@ -73,7 +73,7 @@ var Module = {
 	assetDownloadProgress: {}, // Track how many bytes of each needed asset has been downloaded so far.
 
 	UE4_indexedDBName: 'UE4_assetDatabase_MhLightender', // this should be an ascii ID string without special characters that is unique to the project that is being packaged
-	UE4_indexedDBVersion: 202610271159, // Bump this number to invalidate existing IDB storages in browsers.
+	UE4_indexedDBVersion: 202610271209, // Bump this number to invalidate existing IDB storages in browsers.
 };
 
 
@@ -1116,7 +1116,6 @@ $(document).ready(function() {
 
 	                                      // These are still extensions in WebGL 2:
 	                                      'OES_texture_float',
-	                                      'WEBGL_compressed_texture_s3tc',
 	                                      'EXT_texture_filter_anisotropic'
 	];
 	var unsupportedWebGLExtensions = [];
