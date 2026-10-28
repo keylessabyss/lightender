@@ -1,19 +1,19 @@
 {
   "schema": "keyless-abyss.lightender-distribution/v1",
   "version": 1,
-  "buildId": "shipping-a3f169694f20-chunked-12-runtime-6cc653c3b4eb",
+  "buildId": "shipping-a3f169694f20-chunked-12-runtime-6c49e9350be2",
   "package": "MhLightender-HTML5-Shipping",
-  "totalBytes": 337373622,
+  "totalBytes": 337370093.0,
   "files": [
     {
       "path": "index.html",
-      "size": 4227,
-      "sha256": "8a307c59cf5dced0d0c9cc94d713d462bd37e716c0448e74ece2a18d6c21a2af"
+      "size": 4153,
+      "sha256": "b32978003430aa85d4bc378f0c6e6842ef98ee9d3ceb12a81b8f53eeccdfa842"
     },
     {
       "path": "MhLightender-HTML5-Shipping.css",
-      "size": 5830,
-      "sha256": "495389cc3c07a8b3ca24418afa7e6ebc0e60ac132e7e812c4a44072d05eb14db"
+      "size": 5540,
+      "sha256": "24cc3f30ca5834c1949c932a8bf9145ac7e23b0a7a68cfef117fc738d566110a"
     },
     {
       "path": "LightenderDomShim.js",
@@ -32,18 +32,18 @@
     },
     {
       "path": "MhLightender-HTML5-Shipping.UE4.js",
-      "size": 57714,
-      "sha256": "c5b4e61fc5ee3770eccc382cc25642110f105cd7e13e79621c2de9ad51ecd19c"
+      "size": 56480,
+      "sha256": "401301ea6566d558688d7ca112ee31d93097557dff4b996d165b66150e26685b"
     },
     {
       "path": "MhLightender-HTML5-Shipping.js",
-      "size": 417297,
-      "sha256": "a11ebb30fdef4de76589896fa69c838cc149dd5cc7550a0e39703b70a831a35e"
+      "size": 417296,
+      "sha256": "33abce83a665c93cdff1fb92cc8ed495e5f8f4b647d76c58f4eedb3abb57ae64"
     },
     {
       "path": "MhLightender-HTML5-Shipping.data.js",
-      "size": 7187,
-      "sha256": "c8b4f093b1374c53f51c2a4d7ed0e9ba63fb4b04ec274ac0b791706733b6634d"
+      "size": 7009,
+      "sha256": "a172d1f321d22c59c3f4c590b3f4e189e62778875b871e9f29e2407022c7c664"
     },
     {
       "path": "MhLightender-HTML5-Shipping.wasm",
@@ -52,13 +52,13 @@
     },
     {
       "path": "Utility.js",
-      "size": 56308,
-      "sha256": "9b4baf9491755aa51ed523827113ed6a733123482c1c11320880d3be9fe38c54"
+      "size": 54661,
+      "sha256": "8aeb3016e0392c8726c782ae8e29e49416504b042aca7a3f38f18a3283dd3081"
     },
     {
       "path": "chunks/lightender-chunks.json",
-      "size": 3856,
-      "sha256": "96334d2ac0c0b38672ad1fa2606a88080cd12c5d092bb120d29af464a5a431b3"
+      "size": 3751,
+      "sha256": "b6827512be3ee0f06e67cbbd753dc6b25ba55aa3e5f5b4a8e8c2c895229d5174"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0000",
