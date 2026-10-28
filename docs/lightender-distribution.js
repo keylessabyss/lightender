@@ -20,7 +20,10 @@
         installation: null,
         registration: null,
         runtimeLoaded: false,
-        busy: false
+        busy: false,
+        autoLaunch: false,
+        fullscreenAttempted: false,
+        lastError: false
     };
 
     function element(id) {
@@ -52,19 +55,142 @@
         var installed = !!state.installation;
         var current = installed && state.installation.buildId === state.manifest.buildId;
         var disabled = state.busy;
+        var hosted = isHostedDeployment();
 
-        if (install) install.hidden = installed;
+        if (install) {
+            // Hosted pages should automatically install and launch. Keep a
+            // retry button only after a failed hosted install; local launches
+            // retain the manual install option.
+            install.hidden = hosted ? !state.lastError : installed;
+            install.textContent = state.lastError ? 'Retry Install' : 'Install Lightender';
+            install.disabled = disabled;
+        }
         if (play) {
             play.hidden = !installed;
             play.disabled = disabled || !current;
         }
         if (update) {
-            update.hidden = !installed || current;
+            update.hidden = hosted || !installed || current;
             update.disabled = disabled;
         }
         if (uninstall) {
-            uninstall.hidden = !installed;
+            uninstall.hidden = hosted || !installed;
             uninstall.disabled = disabled;
+        }
+    }
+
+    function isMobileDevice() {
+        return /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent || '') ||
+            (navigator.maxTouchPoints > 1 && window.matchMedia && window.matchMedia('(max-width: 900px)').matches);
+    }
+
+    function isHostedDeployment() {
+        var hostname = (location.hostname || '').toLowerCase();
+        return location.protocol === 'https:' && hostname.slice(-10) === '.github.io';
+    }
+
+    function isFullscreen() {
+        return !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+    }
+
+    function fullscreenRequestFunction() {
+        var root = document.documentElement;
+        return root.requestFullscreen || root.webkitRequestFullscreen || root.msRequestFullscreen;
+    }
+
+    function hideMobileFullscreenPrompt() {
+        var prompt = element('mobile_fullscreen_prompt');
+        if (prompt) prompt.hidden = true;
+    }
+
+    function showMobileFullscreenPrompt() {
+        var prompt = element('mobile_fullscreen_prompt');
+        var button = element('mobile_fullscreen_request');
+        var note = element('mobile_fullscreen_note');
+        if (!prompt || !isMobileDevice() || isFullscreen()) return;
+
+        prompt.hidden = false;
+        if (!fullscreenRequestFunction()) {
+            if (button) {
+                button.textContent = 'Use Add to Home Screen';
+                button.disabled = true;
+            }
+            if (note) note.textContent = 'iPhone Safari does not expose page fullscreen. Add this page to the Home Screen for a standalone full-screen app.';
+        } else {
+            if (button) {
+                button.textContent = 'Enter fullscreen';
+                button.disabled = false;
+            }
+            if (note) note.textContent = 'Tap once to fill the screen.';
+        }
+    }
+
+    function requestFullscreenAndLandscape() {
+        try {
+            var orientation = screen.orientation || screen.msOrientation || screen.mozOrientation;
+            if (orientation && orientation.lock) {
+                var lockResult = orientation.lock('landscape');
+                if (lockResult && lockResult.catch) lockResult.catch(function () {});
+            }
+        } catch (error) {}
+
+        var request = fullscreenRequestFunction();
+        if (!request || isFullscreen()) {
+            if (isFullscreen()) hideMobileFullscreenPrompt();
+            else showMobileFullscreenPrompt();
+            return Promise.resolve(false);
+        }
+
+        try {
+            var result = request.call(document.documentElement);
+            return Promise.resolve(result).then(function () {
+                if (isFullscreen()) hideMobileFullscreenPrompt();
+                return isFullscreen();
+            }).catch(function () {
+                showMobileFullscreenPrompt();
+                return false;
+            });
+        } catch (error) {
+            showMobileFullscreenPrompt();
+            return Promise.resolve(false);
+        }
+    }
+
+    function wireFullscreenControls() {
+        var mobileButton = element('mobile_fullscreen_request');
+        if (mobileButton) mobileButton.addEventListener('click', function () {
+            requestFullscreenAndLandscape();
+        });
+
+        var dismiss = element('mobile_fullscreen_dismiss');
+        if (dismiss) dismiss.addEventListener('click', hideMobileFullscreenPrompt);
+
+        var legacyButton = element('fullscreen_request');
+        if (legacyButton) legacyButton.addEventListener('click', requestFullscreenAndLandscape);
+
+        var tryFromGesture = function () {
+            if (!state.runtimeLoaded || state.fullscreenAttempted || !isMobileDevice()) return;
+            state.fullscreenAttempted = true;
+            requestFullscreenAndLandscape();
+        };
+        document.addEventListener('pointerdown', tryFromGesture, { passive: true, capture: true });
+        if (!window.PointerEvent) document.addEventListener('touchstart', tryFromGesture, { passive: true, capture: true });
+    }
+
+    function setAutoLaunchPending(value) {
+        try {
+            if (value) sessionStorage.setItem('lightender-auto-launch', '1');
+            else sessionStorage.removeItem('lightender-auto-launch');
+        } catch (error) {}
+    }
+
+    function consumeAutoLaunchPending() {
+        try {
+            var pending = sessionStorage.getItem('lightender-auto-launch') === '1';
+            if (pending) sessionStorage.removeItem('lightender-auto-launch');
+            return pending;
+        } catch (error) {
+            return false;
         }
     }
 
@@ -253,7 +379,9 @@
     function cacheResponse(cache, entry, index, total) {
         var url = entry.path;
         setStatus('Downloading ' + (index + 1) + ' of ' + total + ': ' + url);
-        return fetch(url, { cache: 'no-store' }).then(function (response) {
+        var separator = url.indexOf('?') === -1 ? '?' : '&';
+        var requestUrl = url + separator + 'lightender_build=' + encodeURIComponent(state.manifest.buildId);
+        return fetch(requestUrl, { cache: 'no-store' }).then(function (response) {
             if (!response.ok) throw new Error('Download failed (' + response.status + '): ' + url);
             return response.arrayBuffer().then(function (buffer) {
                 if (entry.size !== buffer.byteLength) {
@@ -303,8 +431,11 @@
         }
     }
 
-    function install(force) {
+    function install(force, autoLaunch) {
         if (state.busy) return;
+        state.autoLaunch = state.autoLaunch || !!autoLaunch;
+        if (state.autoLaunch) setAutoLaunchPending(true);
+        state.lastError = false;
         state.busy = true;
         setButtons();
         setProgress(0, 'Preparing installation…');
@@ -344,9 +475,15 @@
             setProgress(null, '');
             setStatus('Lightender is installed (' + bytes(record.bytes) + ').', 'success');
             setButtons();
-            activateWorker();
+            if (activateWorker()) {
+                if (state.autoLaunch) {
+                    state.autoLaunch = false;
+                    loadRuntime();
+                }
+            }
         }).catch(function (error) {
             state.busy = false;
+            state.lastError = true;
             setProgress(null, '');
             setStatus('Installation failed: ' + (error && error.message ? error.message : error), 'error');
             setButtons();
@@ -364,9 +501,11 @@
         script.src = RUNTIME_SCRIPT;
         script.async = false;
         script.onload = function () {
+            setAutoLaunchPending(false);
             setStatus('Lightender is ready.', 'success');
             var panel = element('distribution_panel');
             if (panel) panel.classList.add('runtime-started');
+            showMobileFullscreenPrompt();
         };
         script.onerror = function () {
             state.runtimeLoaded = false;
@@ -399,6 +538,7 @@
     }
 
     function init() {
+        wireFullscreenControls();
         ['distribution_install', 'distribution_update'].forEach(function (id) {
             var button = element(id);
             if (button) button.addEventListener('click', function () { install(id === 'distribution_update'); });
@@ -408,7 +548,7 @@
         var uninstallButton = element('distribution_uninstall');
         if (uninstallButton) uninstallButton.addEventListener('click', uninstall);
 
-        fetch(MANIFEST_URL, { cache: 'no-store' }).then(function (response) {
+        fetch(MANIFEST_URL + '?lightender_manifest=' + Date.now(), { cache: 'no-store' }).then(function (response) {
             if (!response.ok) throw new Error('Could not load the Lightender manifest.');
             return response.json();
         }).then(function (manifest) {
@@ -421,8 +561,17 @@
             if (version) version.textContent = 'Build ' + state.manifest.buildId;
             var installed = element('distribution_installed_at');
             if (installed && state.installation) installed.textContent = 'Installed ' + humanDate(state.installation.installedAt);
-            setStatus(state.installation ? 'Lightender is installed and ready to play.' : 'Install Lightender for offline play.', 'success');
             setButtons();
+            var current = state.installation && state.installation.buildId === state.manifest.buildId;
+            var pendingLaunch = consumeAutoLaunchPending();
+            if (current) {
+                state.lastError = false;
+                setStatus('Lightender is installed and ready to play.', 'success');
+                if (pendingLaunch) loadRuntime();
+            } else {
+                setStatus(state.installation ? 'A new Lightender build is ready. Downloading the update…' : 'Downloading Lightender…', 'success');
+                install(!!state.installation, true);
+            }
         }).catch(function (error) {
             setStatus('Distribution setup failed: ' + (error && error.message ? error.message : error), 'error');
             console.error('Lightender distribution setup failed:', error);

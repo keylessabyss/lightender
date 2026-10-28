@@ -10,9 +10,19 @@ html, body, .container {
 html, body {
 	width: 100%;
 	min-height: 100%;
+	min-height: 100svh;
 	background: linear-gradient(to top left, #050509, #1e1a78);
 	background: linear-gradient(to top left, black, #1e1a78);
 	overflow: hidden;
+}
+
+html {
+	background-color: #111827;
+}
+
+body {
+	min-height: 100dvh;
+	padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
 }
 
 /* Do not let touch drags scroll the page or trigger browser zoom while the
@@ -42,9 +52,11 @@ html, body, #mainarea, canvas {
 	text-align: center;
 	min-width: 0;
 	width: 100%;
-	height: 180px;
+	height: 100dvh;
+	min-height: 100svh;
 	max-width: 100%;
 	display: block;
+	overflow: hidden;
 }
 
 .emscripten {
@@ -60,14 +72,19 @@ html, body, #mainarea, canvas {
 	margin-left: auto;
 	margin-right: auto;
 	width: 100%;
+	max-width: 100vw;
+	max-height: 100%;
 }
 
 .buttonarea {
-	position: relative;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	width: 100%;
 	min-height: 35px;
 	margin: 0;
-	padding: 0 8px;
+	padding: 0 8px calc(4px + env(safe-area-inset-bottom, 0px));
 	border: 0;
 	display: flex;
 	align-items: center;
@@ -100,6 +117,147 @@ html, body, #mainarea, canvas {
 	transform: translate(-50%, -50%);
 }
 
+/* Distribution UI.  It is intentionally part of the project template so
+ * the generated package keeps the same layout as the source shell. */
+.distribution-panel {
+	position: fixed;
+	inset: 0;
+	z-index: 50;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: auto;
+	padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+	background: linear-gradient(135deg, rgba(5, 5, 9, .97), rgba(30, 26, 120, .98));
+}
+
+.distribution-panel.runtime-started {
+	display: none;
+}
+
+.distribution-card {
+	width: min(680px, calc(100vw - 24px));
+	max-height: calc(100svh - 24px);
+	overflow: auto;
+	padding: 28px;
+	border: 1px solid rgba(147, 197, 253, .35);
+	border-radius: 16px;
+	background: rgba(17, 24, 39, .94);
+	box-shadow: 0 20px 60px rgba(0, 0, 0, .45);
+	color: #f9fafb;
+	text-align: center;
+}
+
+.distribution-kicker {
+	margin: 0 0 8px;
+	color: #93c5fd;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: .12em;
+}
+
+.distribution-card h1 {
+	margin: 0 0 12px;
+	font-size: clamp(24px, 5vw, 40px);
+}
+
+.distribution-copy, .distribution-meta, .distribution-status, .distribution-note {
+	margin: 8px 0;
+	line-height: 1.4;
+}
+
+.distribution-meta, .distribution-note {
+	color: #cbd5e1;
+	font-size: 14px;
+}
+
+.distribution-actions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+	margin: 20px 0 12px;
+}
+
+.distribution-button, .mobile-fullscreen-button, .mobile-fullscreen-dismiss {
+	min-height: 44px;
+	border: 1px solid rgba(147, 197, 253, .55);
+	border-radius: 8px;
+	font: inherit;
+	cursor: pointer;
+}
+
+.distribution-button {
+	padding: 8px 16px;
+	background: #2563eb;
+	color: #fff;
+}
+
+.distribution-button.secondary {
+	background: #334155;
+}
+
+.distribution-button:disabled, .mobile-fullscreen-button:disabled {
+	cursor: default;
+	opacity: .65;
+}
+
+.distribution-panel progress {
+	width: 100%;
+	height: 12px;
+}
+
+.distribution-status.success {
+	color: #86efac;
+}
+
+.distribution-status.error {
+	color: #fca5a5;
+}
+
+.mobile-fullscreen-prompt {
+	position: fixed;
+	top: max(8px, env(safe-area-inset-top, 0px));
+	right: max(8px, env(safe-area-inset-right, 0px));
+	z-index: 100;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	max-width: calc(100vw - 16px);
+	padding: 6px;
+	border-radius: 10px;
+	background: rgba(15, 23, 42, .94);
+	box-shadow: 0 6px 22px rgba(0, 0, 0, .35);
+	color: #fff;
+}
+
+.mobile-fullscreen-button {
+	padding: 8px 12px;
+	background: #2563eb;
+	color: #fff;
+	white-space: nowrap;
+}
+
+.mobile-fullscreen-dismiss {
+	width: 44px;
+	padding: 0;
+	background: transparent;
+	border-color: transparent;
+	color: #cbd5e1;
+	font-size: 24px;
+}
+
+.mobile-fullscreen-prompt p {
+	max-width: 260px;
+	margin: 0 4px;
+	font-size: 12px;
+	line-height: 1.25;
+}
+
+[hidden] {
+	display: none !important;
+}
+
 @media (max-width: 700px) {
 	.buttonarea {
 		gap: 4px;
@@ -113,6 +271,20 @@ html, body, #mainarea, canvas {
 		padding-left: 4px;
 		padding-right: 4px;
 		font-size: 12px;
+	}
+
+	.distribution-card {
+		padding: 20px 16px;
+	}
+
+	.mobile-fullscreen-prompt {
+		left: max(8px, env(safe-area-inset-left, 0px));
+		right: max(8px, env(safe-area-inset-right, 0px));
+		justify-content: space-between;
+	}
+
+	.mobile-fullscreen-prompt p {
+		flex: 1 1 auto;
 	}
 
 }

@@ -1,19 +1,19 @@
 {
   "schema": "keyless-abyss.lightender-distribution/v1",
   "version": 1,
-  "buildId": "shipping-a3f169694f20-chunked-12",
+  "buildId": "shipping-a3f169694f20-chunked-12-runtime-f57f70ffa761",
   "package": "MhLightender-HTML5-Shipping",
-  "totalBytes": 337361842,
+  "totalBytes": 337372359,
   "files": [
     {
       "path": "index.html",
-      "size": 3641,
-      "sha256": "fbbb9b73e0c75ea4d3fc578e89c2abd4219f493bee9ea1b9986ce044e7d4480f"
+      "size": 4227,
+      "sha256": "8a307c59cf5dced0d0c9cc94d713d462bd37e716c0448e74ece2a18d6c21a2af"
     },
     {
       "path": "MhLightender-HTML5-Shipping.css",
-      "size": 2167,
-      "sha256": "2641cb02b06ddadbee2e816d36df0a227e0640dac89c0b19e38f047f95a0c2d1"
+      "size": 5830,
+      "sha256": "495389cc3c07a8b3ca24418afa7e6ebc0e60ac132e7e812c4a44072d05eb14db"
     },
     {
       "path": "LightenderDomShim.js",
@@ -22,8 +22,8 @@
     },
     {
       "path": "lightender-distribution.js",
-      "size": 19580,
-      "sha256": "053b0bcaf897a640e4ef8ce135f221d53d3494d8ddfb499868b292b20ebdc1eb"
+      "size": 25848,
+      "sha256": "65f60eecf8de291f9015dc71c8fcaf61dca7111495ce083f66c0b2f0b454d30e"
     },
     {
       "path": "lightender-sw.js",
@@ -33,7 +33,7 @@
     {
       "path": "MhLightender-HTML5-Shipping.UE4.js",
       "size": 57714,
-      "sha256": "115765c27ade8c56a98777b8f3dd3101b2dc71c7760a575bd8aec500d6b5d335"
+      "sha256": "ca26ecb062aa01abf1ff26985852f7a73d042d96d237853d8e7847d56d011c95"
     },
     {
       "path": "MhLightender-HTML5-Shipping.js",
@@ -43,7 +43,7 @@
     {
       "path": "MhLightender-HTML5-Shipping.data.js",
       "size": 7187,
-      "sha256": "c1c6606fbca5a6decd9e03186d6b2eec0fe0fdf02836d60a32f1f9d9252d810a"
+      "sha256": "f371084d3334a61f93ecfbb69aa2c13379599057122dbca6e0f57ef3e6d91a9d"
     },
     {
       "path": "MhLightender-HTML5-Shipping.wasm",

@@ -13,12 +13,20 @@
 <head>
 	<title>MhLightender</title>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 	<meta name="theme-color" content="#111827">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 	<link href="MhLightender-HTML5-Shipping.css" rel="stylesheet">
 </head>
 <body>
+
+<div class="mobile-fullscreen-prompt" id="mobile_fullscreen_prompt" hidden>
+	<button type="button" class="mobile-fullscreen-button" id="mobile_fullscreen_request">Enter fullscreen</button>
+	<button type="button" class="mobile-fullscreen-dismiss" id="mobile_fullscreen_dismiss" aria-label="Dismiss fullscreen prompt">×</button>
+	<p id="mobile_fullscreen_note">Tap once to fill the screen.</p>
+</div>
 
 <section class="distribution-panel" id="distribution_panel" aria-labelledby="distribution_title">
 	<div class="distribution-card">
