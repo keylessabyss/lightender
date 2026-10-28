@@ -1,0 +1,105 @@
+{
+  "schema": "keyless-abyss.lightender-chunks/v1",
+  "sourceFile": "MhLightender-HTML5-Shipping.data",
+  "sourceBytes": 281989062,
+  "sourceSha256": "a3f169694f20aebcfd2ffffd71aa7123ca58d8dde632867c573ea5c2d6613710",
+  "chunkCount": 12,
+  "chunks": [
+    {
+      "path": "chunks/MhLightender-HTML5-Shipping.data.part.0000",
+      "file": "MhLightender-HTML5-Shipping.data.part.0000",
+      "index": 0,
+      "offset": 0,
+      "size": 23499089,
+      "sha256": "a9cd5dff60731247bea149a3ea1cc5980f6532c97d78daacd1f8da186bafad77"
+    },
+    {
+      "path": "chunks/MhLightender-HTML5-Shipping.data.part.0001",
+      "file": "MhLightender-HTML5-Shipping.data.part.0001",
+      "index": 1,
+      "offset": 23499089,
+      "size": 23499089,
+      "sha256": "d0112bd1254305dc9f09b150e5f5618e4b99c562c33bdd7747ca2d552287b29f"
+    },
+    {
+      "path": "chunks/MhLightender-HTML5-Shipping.data.part.0002",
+      "file": "MhLightender-HTML5-Shipping.data.part.0002",
+      "index": 2,
+      "offset": 46998178,
+      "size": 23499089,
+      "sha256": "7d2a21f7256876ed097ebed4da7459e3f0925aac07cbc3e3b7c35fcc56810f90"
+    },
+    {
+      "path": "chunks/MhLightender-HTML5-Shipping.data.part.0003",
+      "file": "MhLightender-HTML5-Shipping.data.part.0003",
+      "index": 3,
+      "offset": 70497267,
+      "size": 23499089,
+      "sha256": "ca221ed691022fdd8cbb1a1db37e0beb76ce2a86bb9f549f1c45a3916a17dba7"
+    },
+    {
+      "path": "chunks/MhLightender-HTML5-Shipping.data.part.0004",
+      "file": "MhLightender-HTML5-Shipping.data.part.0004",
+      "index": 4,
+      "offset": 93996356,
+      "size": 23499089,
+      "sha256": "907565489bcc9737f0a0a70cd834e5165663da161f13208536326217eb9dcb46"
+    },
+    {
+      "path": "chunks/MhLightender-HTML5-Shipping.data.part.0005",
+      "file": "MhLightender-HTML5-Shipping.data.part.0005",
+      "index": 5,
+      "offset": 117495445,
+      "size": 23499089,
+      "sha256": "f086131a346fad45f723dfb98de42d2fabe899d30f122a5a5a16e0938d48f789"
+    },
+    {
+      "path": "chunks/MhLightender-HTML5-Shipping.data.part.0006",
+      "file": "MhLightender-HTML5-Shipping.data.part.0006",
+      "index": 6,
+      "offset": 140994534,
+      "size": 23499088,
+      "sha256": "62eb7137e7059b1561026cce1fd58470583ebeeb2e34557df9b6329ae8ab6a36"
+    },
+    {
+      "path": "chunks/MhLightender-HTML5-Shipping.data.part.0007",
+      "file": "MhLightender-HTML5-Shipping.data.part.0007",
+      "index": 7,
+      "offset": 164493622,
+      "size": 23499088,
+      "sha256": "2f3d09ca3bbb7cc169b961273a55af9cd5b5f4360b3a61aa4f9005b23c0eedc5"
+    },
+    {
+      "path": "chunks/MhLightender-HTML5-Shipping.data.part.0008",
+      "file": "MhLightender-HTML5-Shipping.data.part.0008",
+      "index": 8,
+      "offset": 187992710,
+      "size": 23499088,
+      "sha256": "107037a575c8277bafcce5da5f9a57f016e46a0a2f0373d39c2b02398947f669"
+    },
+    {
+      "path": "chunks/MhLightender-HTML5-Shipping.data.part.0009",
+      "file": "MhLightender-HTML5-Shipping.data.part.0009",
+      "index": 9,
+      "offset": 211491798,
+      "size": 23499088,
+      "sha256": "5922bd8e6e574dfa4df34fef7d546b2cbafb6448edf2114cd5530123b37a77d6"
+    },
+    {
+      "path": "chunks/MhLightender-HTML5-Shipping.data.part.0010",
+      "file": "MhLightender-HTML5-Shipping.data.part.0010",
+      "index": 10,
+      "offset": 234990886,
+      "size": 23499088,
+      "sha256": "4b69d15b5b4d1416b63d071a5ef9dca9a3d13355acefcfe8f49a141d23c70226"
+    },
+    {
+      "path": "chunks/MhLightender-HTML5-Shipping.data.part.0011",
+      "file": "MhLightender-HTML5-Shipping.data.part.0011",
+      "index": 11,
+      "offset": 258489974,
+      "size": 23499088,
+      "sha256": "788d1d67a0f6312b67eacc61082bbfd39f14600a00e5e315fd3cf67ef8cc3451"
+    }
+  ]
+}

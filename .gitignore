@@ -1,0 +1,3 @@
+# The monolithic UE4 HTML5 package is kept as a local build artifact. The
+# publish script emits verified transport chunks under docs/chunks instead.
+/docs/MhLightender-HTML5-Shipping.data
