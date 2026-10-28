@@ -1,4 +1,4 @@
-﻿// javascript code used with Epic Games HTML5 projects
+// javascript code used with Epic Games HTML5 projects
 //
 // much of this is for UE4 development purposes.
 //

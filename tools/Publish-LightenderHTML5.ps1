@@ -34,12 +34,34 @@ $runtimeFiles = @(
     'MhLightender-HTML5-Shipping.wasm',
     'Utility.js'
 )
+$textRuntimeFiles = @(
+    'index.html',
+    'MhLightender-HTML5-Shipping.css',
+    'LightenderDomShim.js',
+    'lightender-distribution.js',
+    'lightender-sw.js',
+    'MhLightender-HTML5-Shipping.UE4.js',
+    'MhLightender-HTML5-Shipping.js',
+    'MhLightender-HTML5-Shipping.data.js',
+    'Utility.js'
+)
+
+function Normalize-TextFileToLf([string]$Path) {
+    $utf8 = New-Object System.Text.UTF8Encoding($false)
+    $text = [System.IO.File]::ReadAllText($Path, $utf8)
+    $text = $text.Replace("`r`n", "`n").Replace("`r", "`n")
+    [System.IO.File]::WriteAllText($Path, $text, $utf8)
+}
+
 foreach ($name in $runtimeFiles) {
     $source = Join-Path $build $name
     if (-not (Test-Path -LiteralPath $source -PathType Leaf)) {
         throw "Generated runtime artifact was not found: $source"
     }
     Copy-Item -LiteralPath $source -Destination (Join-Path $site $name) -Force
+}
+foreach ($name in $textRuntimeFiles) {
+    Normalize-TextFileToLf (Join-Path $site $name)
 }
 
 $chunkDirectory = Join-Path $site 'chunks'
@@ -52,6 +74,7 @@ if ($oldChunks) {
 $splitTool = Join-Path $PSScriptRoot 'Split-LightenderData.ps1'
 $manifestTool = Join-Path $PSScriptRoot 'New-LightenderManifest.ps1'
 & $splitTool -InputFile $dataPath -OutputDirectory $chunkDirectory -MaxChunkMiB $MaxChunkMiB -PublicPathPrefix 'chunks' -ManifestName 'lightender-chunks.json'
+Normalize-TextFileToLf (Join-Path $chunkDirectory 'lightender-chunks.json')
 
 $sourceHash = (Get-FileHash -LiteralPath $dataPath -Algorithm SHA256).Hash.ToLowerInvariant()
 $chunkManifest = Get-Content -Raw -LiteralPath (Join-Path $chunkDirectory 'lightender-chunks.json') | ConvertFrom-Json

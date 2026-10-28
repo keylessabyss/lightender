@@ -3,6 +3,7 @@
   "sourceFile": "MhLightender-HTML5-Shipping.data",
   "sourceBytes": 281989062,
   "sourceSha256": "a3f169694f20aebcfd2ffffd71aa7123ca58d8dde632867c573ea5c2d6613710",
+  "maxChunkBytes": 23592960,
   "chunkCount": 12,
   "chunks": [
     {
@@ -10,96 +11,96 @@
       "file": "MhLightender-HTML5-Shipping.data.part.0000",
       "index": 0,
       "offset": 0,
-      "size": 23499089,
-      "sha256": "a9cd5dff60731247bea149a3ea1cc5980f6532c97d78daacd1f8da186bafad77"
+      "size": 23592960,
+      "sha256": "2e6f833fd1040b376fedbdf0eb0a68f7fc2a8f4e561f335e143f086e97c36c47"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0001",
       "file": "MhLightender-HTML5-Shipping.data.part.0001",
       "index": 1,
-      "offset": 23499089,
-      "size": 23499089,
-      "sha256": "d0112bd1254305dc9f09b150e5f5618e4b99c562c33bdd7747ca2d552287b29f"
+      "offset": 23592960,
+      "size": 23592960,
+      "sha256": "7582b3a5a5dbba084375a87ef43ac6b60c3bb8a5edcbca651b6622e13734c7c7"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0002",
       "file": "MhLightender-HTML5-Shipping.data.part.0002",
       "index": 2,
-      "offset": 46998178,
-      "size": 23499089,
-      "sha256": "7d2a21f7256876ed097ebed4da7459e3f0925aac07cbc3e3b7c35fcc56810f90"
+      "offset": 47185920,
+      "size": 23592960,
+      "sha256": "8bb031e8a74359e41311b7eb9d8037e8f997a1d89c37ddd92e271a20859cbf75"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0003",
       "file": "MhLightender-HTML5-Shipping.data.part.0003",
       "index": 3,
-      "offset": 70497267,
-      "size": 23499089,
-      "sha256": "ca221ed691022fdd8cbb1a1db37e0beb76ce2a86bb9f549f1c45a3916a17dba7"
+      "offset": 70778880,
+      "size": 23592960,
+      "sha256": "b093d1edbe3ce4810a6221abf895c5c3474128007a1ddfd9503907547a54cb8b"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0004",
       "file": "MhLightender-HTML5-Shipping.data.part.0004",
       "index": 4,
-      "offset": 93996356,
-      "size": 23499089,
-      "sha256": "907565489bcc9737f0a0a70cd834e5165663da161f13208536326217eb9dcb46"
+      "offset": 94371840,
+      "size": 23592960,
+      "sha256": "fcdc8c17d1f208b2d2dfdd1bdabe96174a645c64e3747d105b8dfd54c1c98ac8"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0005",
       "file": "MhLightender-HTML5-Shipping.data.part.0005",
       "index": 5,
-      "offset": 117495445,
-      "size": 23499089,
-      "sha256": "f086131a346fad45f723dfb98de42d2fabe899d30f122a5a5a16e0938d48f789"
+      "offset": 117964800,
+      "size": 23592960,
+      "sha256": "a412c6a36c72de274fedf92d7614a3c8b7374e1f81070fa464a3f1b3aeaaf537"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0006",
       "file": "MhLightender-HTML5-Shipping.data.part.0006",
       "index": 6,
-      "offset": 140994534,
-      "size": 23499088,
-      "sha256": "62eb7137e7059b1561026cce1fd58470583ebeeb2e34557df9b6329ae8ab6a36"
+      "offset": 141557760,
+      "size": 23592960,
+      "sha256": "29136e7356f71183da361d91ab9759100b61fc10568346d53b1805f787942b93"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0007",
       "file": "MhLightender-HTML5-Shipping.data.part.0007",
       "index": 7,
-      "offset": 164493622,
-      "size": 23499088,
-      "sha256": "2f3d09ca3bbb7cc169b961273a55af9cd5b5f4360b3a61aa4f9005b23c0eedc5"
+      "offset": 165150720,
+      "size": 23592960,
+      "sha256": "7d8f4aff8d186add91406208bc3a2a50f337de35e06226097568a400646b4034"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0008",
       "file": "MhLightender-HTML5-Shipping.data.part.0008",
       "index": 8,
-      "offset": 187992710,
-      "size": 23499088,
-      "sha256": "107037a575c8277bafcce5da5f9a57f016e46a0a2f0373d39c2b02398947f669"
+      "offset": 188743680,
+      "size": 23592960,
+      "sha256": "ff2a4fac2fe4f7a919e5b83168ee8543b5ebfcce68a23e0c4b775abd2abda831"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0009",
       "file": "MhLightender-HTML5-Shipping.data.part.0009",
       "index": 9,
-      "offset": 211491798,
-      "size": 23499088,
-      "sha256": "5922bd8e6e574dfa4df34fef7d546b2cbafb6448edf2114cd5530123b37a77d6"
+      "offset": 212336640,
+      "size": 23592960,
+      "sha256": "2b82e16e19d3f5e333fdf7224d614fec1aa46ce1b883525d8161eb57b5371236"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0010",
       "file": "MhLightender-HTML5-Shipping.data.part.0010",
       "index": 10,
-      "offset": 234990886,
-      "size": 23499088,
-      "sha256": "4b69d15b5b4d1416b63d071a5ef9dca9a3d13355acefcfe8f49a141d23c70226"
+      "offset": 235929600,
+      "size": 23592960,
+      "sha256": "8ea3477a54381cd5e3b7e2020e288aeb13b948321adc88633183b27a1bb73f8f"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0011",
       "file": "MhLightender-HTML5-Shipping.data.part.0011",
       "index": 11,
-      "offset": 258489974,
-      "size": 23499088,
-      "sha256": "788d1d67a0f6312b67eacc61082bbfd39f14600a00e5e315fd3cf67ef8cc3451"
+      "offset": 259522560,
+      "size": 22466502,
+      "sha256": "734b00c5e5f7982d1c02f4b4815fb4a9d095deadcac291fe97efc065f98875c1"
     }
   ]
 }
