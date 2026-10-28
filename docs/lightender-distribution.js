@@ -22,6 +22,7 @@
         runtimeLoaded: false,
         busy: false,
         autoLaunch: false,
+        requestedAction: '',
         fullscreenAttempted: false,
         lastError: false
     };
@@ -66,8 +67,10 @@
             install.disabled = disabled;
         }
         if (play) {
-            play.hidden = !installed;
-            play.disabled = disabled || !current;
+            // Play is also the recovery path for a missing or stale install.
+            // This lets the Games Library launch a first-time player directly.
+            play.hidden = false;
+            play.disabled = disabled;
         }
         if (update) {
             update.hidden = hosted || !installed || current;
@@ -87,6 +90,15 @@
     function isHostedDeployment() {
         var hostname = (location.hostname || '').toLowerCase();
         return location.protocol === 'https:' && hostname.slice(-10) === '.github.io';
+    }
+
+    function getRequestedAction() {
+        var query = location.search || '';
+        var match = query.match(/[?&]lightender_action=([^&]*)/i);
+        if (!match) return '';
+        var action = '';
+        try { action = decodeURIComponent(match[1]).toLowerCase(); } catch (error) {}
+        return action === 'install' || action === 'play' ? action : '';
     }
 
     function isFullscreen() {
@@ -493,7 +505,7 @@
 
     function loadRuntime() {
         if (state.runtimeLoaded) return;
-        if (!state.installation) return setStatus('Install Lightender before pressing Play.', 'error');
+        if (!state.installation) return setStatus('Preparing Lightender for play…', 'success');
         if (!activateWorker()) return;
         state.runtimeLoaded = true;
         setStatus('Launching Lightender…');
@@ -512,6 +524,23 @@
             setStatus('The installed runtime could not be loaded.', 'error');
         };
         document.body.appendChild(script);
+    }
+
+    function playLightender() {
+        if (state.busy) return;
+        if (!state.manifest) {
+            setStatus('Preparing the Lightender distribution…', 'success');
+            return;
+        }
+
+        var current = state.installation && state.installation.buildId === state.manifest.buildId;
+        if (!current) {
+            // Do not expose installation as a prerequisite. The split package
+            // still gets verified and cached before the UE4 runtime starts.
+            install(!!state.installation, true);
+            return;
+        }
+        loadRuntime();
     }
 
     function uninstall() {
@@ -538,13 +567,14 @@
     }
 
     function init() {
+        state.requestedAction = getRequestedAction();
         wireFullscreenControls();
         ['distribution_install', 'distribution_update'].forEach(function (id) {
             var button = element(id);
             if (button) button.addEventListener('click', function () { install(id === 'distribution_update'); });
         });
         var play = element('distribution_play');
-        if (play) play.addEventListener('click', loadRuntime);
+        if (play) play.addEventListener('click', playLightender);
         var uninstallButton = element('distribution_uninstall');
         if (uninstallButton) uninstallButton.addEventListener('click', uninstall);
 
@@ -564,13 +594,14 @@
             setButtons();
             var current = state.installation && state.installation.buildId === state.manifest.buildId;
             var pendingLaunch = consumeAutoLaunchPending();
+            var wantsPlay = state.requestedAction !== 'install' || pendingLaunch;
             if (current) {
                 state.lastError = false;
                 setStatus('Lightender is installed and ready to play.', 'success');
-                if (pendingLaunch) loadRuntime();
+                if (wantsPlay) loadRuntime();
             } else {
                 setStatus(state.installation ? 'A new Lightender build is ready. Downloading the update…' : 'Downloading Lightender…', 'success');
-                install(!!state.installation, true);
+                install(!!state.installation, wantsPlay);
             }
         }).catch(function (error) {
             setStatus('Distribution setup failed: ' + (error && error.message ? error.message : error), 'error');
