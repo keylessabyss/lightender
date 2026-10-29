@@ -1,9 +1,9 @@
 {
   "schema": "keyless-abyss.lightender-distribution/v1",
   "version": 1,
-  "buildId": "shipping-c9d1318011e8-chunked-12-runtime-c3e1bac00cb7",
+  "buildId": "shipping-c9d1318011e8-chunked-12-runtime-112b6bd6fbae",
   "package": "MhLightender-HTML5-Shipping",
-  "totalBytes": 130918450,
+  "totalBytes": 130922420,
   "files": [
     {
       "path": "index.html",
@@ -33,7 +33,7 @@
     {
       "path": "MhLightender-HTML5-Shipping.UE4.js",
       "size": 56477,
-      "sha256": "a96d0502f5f2f5cc06ba330b92c50ab17920bedd50aafaad2217fb0d7987c175"
+      "sha256": "87d3f2224ed50b486bb84e6ab778fc9ef344d63a0a3440e65f7d6cc9034786b0"
     },
     {
       "path": "MhLightender-HTML5-Shipping.js",
@@ -43,12 +43,12 @@
     {
       "path": "MhLightender-HTML5-Shipping.data.js",
       "size": 7007,
-      "sha256": "1b0868543886422061887db25de5745490c3399cda93b774fcd39dc2cd821bf6"
+      "sha256": "c5a27cd130c126e4d46f54973ff143c92ac49549ec897ec0e40f4321141b77f9"
     },
     {
       "path": "MhLightender-HTML5-Shipping.wasm",
-      "size": 54808035,
-      "sha256": "14c5617da41fdb6f3fde393a30c46962e3c392bdcd023f961d3ff7c75d5ad48c"
+      "size": 54812005,
+      "sha256": "4c1d18d3e417a57c9937fcd19ea86957dbe0d88685a0bbfacf9724eba258e766"
     },
     {
       "path": "Utility.js",
