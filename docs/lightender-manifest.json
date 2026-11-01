@@ -1,9 +1,9 @@
 {
   "schema": "keyless-abyss.lightender-distribution/v1",
   "version": 1,
-  "buildId": "shipping-d7b069d0a851-chunked-12-runtime-9d3348665d31",
+  "buildId": "shipping-90f14ed22a51-chunked-12-runtime-f276d7586d25",
   "package": "MhLightender-HTML5-Shipping",
-  "totalBytes": 309205414,
+  "totalBytes": 182813305,
   "files": [
     {
       "path": "index.html",
@@ -33,22 +33,22 @@
     {
       "path": "MhLightender-HTML5-Shipping.UE4.js",
       "size": 56477,
-      "sha256": "277a7bc6f4843cc69724b9a79905bcfc00bb71ae1073f35e8234a08346f389b9"
+      "sha256": "c702d016634cc787dc96f3ecf2d6f525bb0e45b1ade6efcbe7174aa4ca0a4017"
     },
     {
       "path": "MhLightender-HTML5-Shipping.js",
       "size": 417296,
-      "sha256": "3005a10bc72789f3ab8ac364960f2d64ebd44e2a9dcb8a1fe4914fed769da18e"
+      "sha256": "770839a43cbb35e01850446e55653139b9cd1cc64de30f5a57f2cf10f6ed19f0"
     },
     {
       "path": "MhLightender-HTML5-Shipping.data.js",
       "size": 7009,
-      "sha256": "85954d5369f7790e2283ec2a0984ed416231df4d18c6897cdc93a6330844327b"
+      "sha256": "77d8e90fb9273c0fa8f92be7e8224b2f0eebd994e5d06f633014ce542c2122cc"
     },
     {
       "path": "MhLightender-HTML5-Shipping.wasm",
-      "size": 54868720,
-      "sha256": "424186a0fef3fff2c0910d03446b5454ed87f66535280cfac9d825ad12e92789"
+      "size": 54869685,
+      "sha256": "11878d4feeec70dd197caf1dee646af46b91b676e84c5b06163533dde80ab3be"
     },
     {
       "path": "Utility.js",
@@ -57,75 +57,75 @@
     },
     {
       "path": "chunks/lightender-chunks.json",
-      "size": 3751,
-      "sha256": "e2c3b11af8f72dd493de79a4c6b6fee83e4b13f454e5d5553325a8b4a9ec40b2"
+      "size": 3746,
+      "sha256": "02bd1d0e0a58306b18b4577cb34868fd340c498b82cf411cdfd3388ac27e3a4e"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0000",
-      "size": 21146073,
-      "sha256": "521412ecef7017403a43eab8b75825aff513bccd56e7cb1b920fbd6abc1144de"
+      "size": 10613317,
+      "sha256": "ec0c8ed3ca623db7688a37b8a9da288598b16b070637c35860787f854741fef4"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0001",
-      "size": 21146073,
-      "sha256": "4c6f9e1e0a920e9a28f98eba63eaeabb0790f1c5599a79dd70ac24e96a9c1eb1"
+      "size": 10613317,
+      "sha256": "2a81d6bd3add92cd707dd6b1b341815026cd11dda5bdd6bf8635ce0aef5ea5af"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0002",
-      "size": 21146072,
-      "sha256": "462c52a3b37c44c5c057cd38380c8562dbe6cecc5953b1cce24458078c2113b7"
+      "size": 10613317,
+      "sha256": "1a9d3c920e0c755cd62d7a0678bf560bd2695e6a7bf968dd47795d65f1414e38"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0003",
-      "size": 21146072,
-      "sha256": "2fe51537ab4505482b0ed36d5ae4d3ff8620b0d4837419365a2c436dd22d6fd1"
+      "size": 10613317,
+      "sha256": "a219e547ffc372855fea06eeaab6d1a70ad4f37068a2c7295a76b0b3f4cdb2a7"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0004",
-      "size": 21146072,
-      "sha256": "cc613e8101006dff262db6bfb57d51e58a45afec16d7decbd10f710639046581"
+      "size": 10613317,
+      "sha256": "a45bf68c5df4d26d98bbbd80a891034149e4d9098ea7df3ee3c7927c71a824f4"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0005",
-      "size": 21146072,
-      "sha256": "d82955005ac2af71d63f3620ffe41ca6e8826f23cd6e31893699da42ba1c2a3b"
+      "size": 10613316,
+      "sha256": "80a00c6abe98eef830db7c48264a56fee6396a42887b4168042381812be03899"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0006",
-      "size": 21146072,
-      "sha256": "78a26781db88fc2483ad89335e4e7386cb6bfe8ebc8a75a88260a6bb7d3ea185"
+      "size": 10613316,
+      "sha256": "427decedf86b68f9820132435413a3480dd8f1f674410af87239383c6cbff6d6"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0007",
-      "size": 21146072,
-      "sha256": "85a9a6c5368afbd81454939d07db5af6fab573550bd0d241fd3f1d512dbca30b"
+      "size": 10613316,
+      "sha256": "36ca267a347c9b49b5366391da7512b3e6b51641844588a8da59708d662d549a"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0008",
-      "size": 21146072,
-      "sha256": "440d13f49b77a83955d43b0da2abd7c191fe0a76611174c76ab0bd657aae608a"
+      "size": 10613316,
+      "sha256": "9f50399854228969a67e2a59676e0c2ec7fb7fdb5edb0eacecabd1a81888bef9"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0009",
-      "size": 21146072,
-      "sha256": "8cb143ff6a663bb00b73a12270c01b08684634531f2e0ec1f2e5606d71ccb1e8"
+      "size": 10613316,
+      "sha256": "f710d7841605060112ea0a66a87b305a64368b04f11bdba136cb27f30f55203b"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0010",
-      "size": 21146072,
-      "sha256": "68411f4a51b0c88192d093f49eb2e4a90d95b2a5d81feb997bdc457ef5008d02"
+      "size": 10613316,
+      "sha256": "3833177e0868aac2f71feec43d31bf97ca292fb0ac20980512315aef5a40b878"
     },
     {
       "path": "chunks/MhLightender-HTML5-Shipping.data.part.0011",
-      "size": 21146072,
-      "sha256": "1e865d242b1ac0c447219c5b55364aabc7f2e24abdf00e243935f83cab6f63e7"
+      "size": 10613316,
+      "sha256": "d137372939a0ee5c699d4b01ddb9b415f32d4a5848ecb1ca04d1431bcb3df919"
     }
   ],
   "packageDelivery": {
     "type": "chunked",
     "path": "MhLightender-HTML5-Shipping.data",
     "manifest": "chunks/lightender-chunks.json",
-    "sourceBytes": 253752866,
-    "sourceSha256": "d7b069d0a85145f399d0df1e3b7253c468836fae465c77330a1a561a0b265b55"
+    "sourceBytes": 127359797,
+    "sourceSha256": "90f14ed22a51b8481d9f00cfe52db6f7c3267dd8cebe6f50d41a5578d3ac3476"
   }
 }
